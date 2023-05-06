@@ -8,8 +8,12 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_CORE_HPP
-#define HEX_CORE_HPP
+#if !defined(HEX_LOGGING) || !HEX_LOGGING
+    #error "hex_debug - logging-headers used without logging enabled"
+#endif
+
+#ifndef HEX_CORE_CFG_DEBUG_HPP
+#define HEX_CORE_CFG_DEBUG_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -17,15 +21,19 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::core::api
-#ifndef HEX_CORE_CFG_API_HPP
-    #include "cfg/hex_api.hpp"
-#endif /// !HEX_CORE_CFG_API_HPP
+#if HEX_DEBUG // DEBUG
 
-#if defined(HEX_LOGGING) // DEBUG
-    #include <hex/core/cfg/hex_debug.hpp>
-#endif /// DEBUG
+    // Include assertions
+    #include <cassert>
+
+#endif // DEBUG
+
+// Include STL exception
+#include <exception>
+
+// Include STL string
+#include <string>
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_CORE_HPP
+#endif /// !HEX_CORE_CFG_DEBUG_HPP

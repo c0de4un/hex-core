@@ -56,6 +56,18 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}hex_core.hpp"
 )
 
+# DEBUG
+if ( HEX_DEBUG OR HEX_LOGGING )
+    set( HEX_CORE_HEADERS
+        # CFG
+        "${HEX_CORE_PUBLIC}cfg/hex_debug.hpp"
+        # METRICS
+        "${HEX_CORE_PUBLIC}metrics/ILogger.hxx"
+        "${HEX_CORE_PUBLIC}metrics/Log.hpp"
+        ${HEX_CORE_HEADERS}
+    )
+endif ( HEX_DEBUG OR HEX_LOGGING )
+
 # Append to Exportable Headers
 set( HEX_EXPORT_HEADERS ${HEX_CORE_HEADERS} ${HEX_EXPORT_HEADERS} )
 
@@ -68,6 +80,15 @@ set( HEX_CORE_SOURCES
     # PCH
     "${HEX_CORE_PRIVATE}hex_core.cpp"
 )
+
+# DEBUG
+if ( HEX_DEBUG OR HEX_LOGGING )
+    set( HEX_CORE_SOURCES
+        # METRICS
+        "${HEX_CORE_PRIVATE}metrics/Log.cpp"
+        ${HEX_CORE_SOURCES}
+    )
+endif ( HEX_DEBUG OR HEX_LOGGING )
 
 # Append to Exportable Sources
 set( HEX_EXPORT_SOURCES ${HEX_CORE_SOURCES} ${HEX_EXPORT_SOURCES} )
@@ -90,14 +111,20 @@ if ( HEX_CORE_BUILD_MODE STREQUAL "STATIC" )
     # Create STATIC Library Object
     add_library( hex STATIC ${HEX_EXPORT_SOURCES} ${HEX_EXPORT_HEADERS} )
 
+    # Link with hexEngine.Core
+    target_include_directories( hex PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/public" )
+
     message( STATUS "${PROJECT_NAME} - building as STATIC library" )
 elseif ( HEX_CORE_BUILD_MODE STREQUAL "SHARED" )
     # Create SHARED Library Object
     add_library( hex SHARED ${HEX_EXPORT_SOURCES} ${HEX_EXPORT_HEADERS} )
 
+    # Link with hexEngine.Core
+    target_include_directories( hex PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/public" )
+
     message( STATUS "${PROJECT_NAME} - building as SHARED library" )
 elseif ( HEX_CORE_BUILD_MODE STREQUAL "EXPORT" )
-    message( STATUS "${PROJECT_NAME} - exported to <HEX_EXPORT_HEADERS> and <HEX_EXPORT_SOURCES>" )
+    message( FATAL_ERROR "${PROJECT_NAME} - this CMakelists should't be used if case of exporting. Instead manually include required <module.cmake> files" )
 else ( HEX_CORE_BUILD_MODE STREQUAL "STATIC" )
     message( FATAL_ERROR "${PROJECT_NAME} - undefined build-mode, configuration required" )
 endif ( HEX_CORE_BUILD_MODE STREQUAL "STATIC" )
