@@ -8,6 +8,13 @@ include( "cmake/constants.cmake" )
 cmake_minimum_required( VERSION ${HEX_CMAKE_VERSION} )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# CONFIGS
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+include( "cmake/platform.cmake" )
+include( "cmake/build_types.cmake" )
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # PROJECT
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
