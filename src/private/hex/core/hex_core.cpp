@@ -16,7 +16,7 @@
 
 // HEADER
 #ifndef HEX_CORE_HPP
-
+    #include <hex/core/hex_core.hpp>
 #endif /// !HEX_CORE_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

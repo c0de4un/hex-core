@@ -15,6 +15,11 @@ if ( NOT DEFINED HEX_BUILD_TYPES )
         add_definitions ( -DHEX_DEBUG=0 )
     endif ( ${CMAKE_BUILD_TYPE} STREQUAL "Debug" )
 
+    if ( NOT DEFINED HEX_LOGGING AND HEX_DEBUG )
+        set(HEX_LOGGING ON)
+        add_definitions ( -DHEX_LOGGING=1 )
+    endif ( NOT DEFINED HEX_LOGGING AND HEX_DEBUG )
+
     set( NOT DEFINED HEX_BUILD_TYPES TRUE )
 endif ( NOT DEFINED HEX_BUILD_TYPES )
 
