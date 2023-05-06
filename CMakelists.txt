@@ -114,6 +114,9 @@ if ( HEX_CORE_BUILD_MODE STREQUAL "STATIC" )
     # Link with hexEngine.Core
     target_include_directories( hex PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/core/public" )
 
+    # Link with hexEngine.Patfrom
+    target_include_directories( hex PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/${PLATFORM}/public" )
+
     message( STATUS "${PROJECT_NAME} - building as STATIC library" )
 elseif ( HEX_CORE_BUILD_MODE STREQUAL "SHARED" )
     # Create SHARED Library Object
@@ -121,6 +124,9 @@ elseif ( HEX_CORE_BUILD_MODE STREQUAL "SHARED" )
 
     # Link with hexEngine.Core
     target_include_directories( hex PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/core/public" )
+
+    # Link with hexEngine.Patfrom
+    target_include_directories( hex PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/${PLATFORM}/public" )
 
     message( STATUS "${PROJECT_NAME} - building as SHARED library" )
 elseif ( HEX_CORE_BUILD_MODE STREQUAL "EXPORT" )
