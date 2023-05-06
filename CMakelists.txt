@@ -11,7 +11,7 @@ cmake_minimum_required( VERSION ${HEX_CMAKE_VERSION} )
 # PROJECT
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-project( ${HEX_CORE_PROJECT_NAME} VERSION ${HEX_CORE_VERSION} LANGUAGES C CXX )
+project( "hexEngine" VERSION ${HEX_CORE_VERSION} LANGUAGES C CXX )
 
 # Enable Position Independent Code
 set( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON )
@@ -34,7 +34,7 @@ include( "cmake/globals.cmake" )
 # CONSTANTS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-set( HEX_CORE_SRC "${CMAKE_SOURCE_DIR}/src/" )
+set( HEX_CORE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src" )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # HEADERS
@@ -61,17 +61,33 @@ set( HEX_CORE_SOURCES
 set( HEX_EXPORT_SOURCES ${HEX_CORE_SOURCES} ${HEX_EXPORT_SOURCES} )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# MODULES
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+foreach( HEX_MODULE_NAME ${HEX_MODULES_LIST} )
+    message( STATUS "${PROJECT_NAME} - including module #${HEX_MODULE_NAME}" )
+
+    include( "${HEX_SRC_ROOT_DIR}/${HEX_MODULE_NAME}/module.cmake" )
+endforeach()
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # BUILD
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if ( HEX_CORE_BUILD_MODE STREQUAL "STATIC" )
-    message( STATUS "${CMAKE_PROJECT_NAME} - building as STATIC library" )
+    # Create STATIC Library Object
+    add_library( hex STATIC ${HEX_EXPORT_SOURCES} ${HEX_EXPORT_HEADERS} )
+
+    message( STATUS "${PROJECT_NAME} - building as STATIC library" )
 elseif ( HEX_CORE_BUILD_MODE STREQUAL "SHARED" )
-    message( STATUS "${CMAKE_PROJECT_NAME} - building as SHARED library" )
+    # Create SHARED Library Object
+    add_library( hex SHARED ${HEX_EXPORT_SOURCES} ${HEX_EXPORT_HEADERS} )
+
+    message( STATUS "${PROJECT_NAME} - building as SHARED library" )
 elseif ( HEX_CORE_BUILD_MODE STREQUAL "EXPORT" )
-    message( STATUS "${CMAKE_PROJECT_NAME} - exported to <HEX_EXPORT_HEADERS> and <HEX_EXPORT_SOURCES>" )
+    message( STATUS "${PROJECT_NAME} - exported to <HEX_EXPORT_HEADERS> and <HEX_EXPORT_SOURCES>" )
 else ( HEX_CORE_BUILD_MODE STREQUAL "STATIC" )
-    message( FATAL_ERROR "${CMAKE_PROJECT_NAME} - undefined build-mode, configuration required" )
+    message( FATAL_ERROR "${PROJECT_NAME} - undefined build-mode, configuration required" )
 endif ( HEX_CORE_BUILD_MODE STREQUAL "STATIC" )
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
