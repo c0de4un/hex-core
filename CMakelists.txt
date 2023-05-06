@@ -49,6 +49,10 @@ set( HEX_CORE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src" )
 
 set( HEX_CORE_PUBLIC "${HEX_CORE_SRC}/public/hex/core/" )
 set( HEX_CORE_HEADERS
+    # CFG
+    "${HEX_CORE_PUBLIC}cfg/hex_api.hpp"
+    "${HEX_CORE_PUBLIC}cfg/hex_platform.hpp"
+    # PCH
     "${HEX_CORE_PUBLIC}hex_core.hpp"
 )
 
@@ -61,6 +65,7 @@ set( HEX_EXPORT_HEADERS ${HEX_CORE_HEADERS} ${HEX_EXPORT_HEADERS} )
 
 set( HEX_CORE_PRIVATE "${HEX_CORE_SRC}/private/hex/core/" )
 set( HEX_CORE_SOURCES
+    # PCH
     "${HEX_CORE_PRIVATE}hex_core.cpp"
 )
 

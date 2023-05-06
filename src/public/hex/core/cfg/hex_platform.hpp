@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_CORE_HPP
-#define HEX_CORE_HPP
+#ifndef HEX_CORE_CFG_PLATFORM_HPP
+#define HEX_CORE_CFG_PLATFORM_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -17,11 +17,23 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::core::api
-#ifndef HEX_CORE_CFG_API_HPP
-    #include "cfg/hex_api.hpp"
-#endif /// !HEX_CORE_CFG_API_HPP
+#if !defined(HEX_PLATFORM_DEFINED) || HEX_PLATFORM_DEFINED == 0
+
+    // WINDOWS
+    #if defined( MINGW ) || defined( MINGGW32 ) || defined( MINGW64 ) || defined( WIN32 ) || defined( WIN64 ) || defined( WINDOWS ) || defined( MSVC )
+        #define HEX_WINDOWS
+    #elif defined( __linux ) || defined( _linux ) || defined( _linux_ ) || defined( __linux__ ) || defined( LINUX )
+        // LINUX
+        #define HEX_LINUX
+    #elif defined( ANDROID ) || defined( _android_ ) || defined( __android__ ) || defined( _android ) || defined( __android )
+        // ANDROID
+        #define HEX_ANDROID
+    #else
+        #error "hex_platform.hpp - configuration required"
+    #endif
+
+#endif
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_CORE_HPP
+#endif /// !HEX_CORE_CFG_PLATFORM_HPP
