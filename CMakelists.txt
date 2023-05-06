@@ -4,15 +4,15 @@
 # CMake
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-include( "cmake/constants.cmake" )
+include( "core/cmake/constants.cmake" )
 cmake_minimum_required( VERSION ${HEX_CMAKE_VERSION} )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # CONFIGS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-include( "cmake/platform.cmake" )
-include( "cmake/build_types.cmake" )
+include( "core/cmake/platform.cmake" )
+include( "core/cmake/build_types.cmake" )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # PROJECT
@@ -35,13 +35,13 @@ set( CMAKE_AUTORCC ON )
 # GLOBALS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-include( "cmake/globals.cmake" )
+include( "core/cmake/globals.cmake" )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # CONSTANTS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-set( HEX_CORE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src" )
+set( HEX_CORE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/core" )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # HEADERS
@@ -112,7 +112,7 @@ if ( HEX_CORE_BUILD_MODE STREQUAL "STATIC" )
     add_library( hex STATIC ${HEX_EXPORT_SOURCES} ${HEX_EXPORT_HEADERS} )
 
     # Link with hexEngine.Core
-    target_include_directories( hex PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/public" )
+    target_include_directories( hex PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/core/public" )
 
     message( STATUS "${PROJECT_NAME} - building as STATIC library" )
 elseif ( HEX_CORE_BUILD_MODE STREQUAL "SHARED" )
@@ -120,7 +120,7 @@ elseif ( HEX_CORE_BUILD_MODE STREQUAL "SHARED" )
     add_library( hex SHARED ${HEX_EXPORT_SOURCES} ${HEX_EXPORT_HEADERS} )
 
     # Link with hexEngine.Core
-    target_include_directories( hex PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/public" )
+    target_include_directories( hex PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/core/public" )
 
     message( STATUS "${PROJECT_NAME} - building as SHARED library" )
 elseif ( HEX_CORE_BUILD_MODE STREQUAL "EXPORT" )
