@@ -99,6 +99,23 @@ namespace hex
             mLogger->printError(msg);
         }
 
+        void Log::Initialize(logger_ptr pLogger) HEX_NOEXCEPT
+        {
+#ifdef HEX_DEBUG // DEBUG
+            assert(!mLogger && "Log::Initialize: already initialized");
+#endif // DEBUG
+
+            mLogger = pLogger;
+        }
+
+        void Log::Terminate() noexcept
+        {
+            if (mLogger)
+                delete mLogger;
+
+            mLogger = nullptr;
+        }
+
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     }

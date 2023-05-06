@@ -113,6 +113,9 @@ namespace hex
             static void Warning(const char* const msg) noexcept;
             static void Error(const char* const msg) noexcept;
 
+            static void Initialize(logger_ptr pLogger) HEX_NOEXCEPT;
+            static void Terminate() noexcept;
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         };
