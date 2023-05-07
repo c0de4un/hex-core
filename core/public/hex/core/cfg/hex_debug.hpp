@@ -34,6 +34,11 @@
 // Include STL string
 #include <string>
 
+// Include hex::core::Log
+#ifndef HEX_CORE_LOG_HPP
+    #include <hex/core/metrics/Log.hpp>
+#endif /// !HEX_CORE_LOG_HPP
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 #endif /// !HEX_CORE_CFG_DEBUG_HPP
