@@ -51,8 +51,10 @@ set( HEX_CORE_PUBLIC "${HEX_CORE_SRC}/public/hex/core/" )
 set( HEX_CORE_HEADERS
     # CFG
     "${HEX_CORE_PUBLIC}cfg/hex_api.hpp"
-    "${HEX_CORE_PUBLIC}cfg/hex_map.hpp"
+
+    "${HEX_CORE_PUBLIC}cfg/hex_atomic.hpp"    "${HEX_CORE_PUBLIC}cfg/hex_map.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_mutex.hpp"
+    "${HEX_CORE_PUBLIC}cfg/hex_numeric.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_platform.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_vector.hpp"
     # ASYNC
@@ -62,6 +64,9 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}memory/IReferenceUser.hxx"
     "${HEX_CORE_PUBLIC}memory/MemoryManager.hpp"
     "${HEX_CORE_PUBLIC}memory/SharedPointer.hpp"
+    # ECS
+    "${HEX_CORE_PUBLIC}ecs/ecs_types.hpp"
+    "${HEX_CORE_PUBLIC}ecs/Component.hpp"
     # PCH
     "${HEX_CORE_PUBLIC}hex_core.hpp"
 )
