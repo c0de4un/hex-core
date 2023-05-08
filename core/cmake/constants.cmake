@@ -26,6 +26,11 @@ if ( NOT DEFINED HEX_CXX_VERSION )
 endif ( NOT DEFINED HEX_CXX_VERSION )
 message( STATUS "hexEngine - C++ version is ${HEX_CXX_VERSION}" )
 
+# Pack Structs
+if ( NOT DEFINED HEX_NO_STRUCT_PACK )
+    add_definitions( -DHEX_PACK_STRUCTS=1 )
+endif ( NOT DEFINED HEX_NO_STRUCT_PACK )
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # BUILD
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

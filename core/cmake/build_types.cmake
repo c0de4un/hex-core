@@ -12,7 +12,7 @@ if ( NOT DEFINED HEX_BUILD_TYPES )
 
         set ( HEX_BUILD_TYPE "release" )
         set ( HEX_DEBUG OFF )
-        add_definitions ( -DHEX_DEBUG=0 )
+        #add_definitions ( -DHEX_DEBUG=0 )
     endif ( ${CMAKE_BUILD_TYPE} STREQUAL "Debug" )
 
     if ( NOT DEFINED HEX_LOGGING AND HEX_DEBUG )
