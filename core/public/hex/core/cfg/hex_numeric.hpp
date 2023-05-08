@@ -21,7 +21,6 @@
 #include <numeric>
 #include <cstdint>
 #include <limits>
-#include <iostream> // Required for numeric_limits
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // ALIASES
@@ -39,6 +38,16 @@ using hex_int64  = int64_t;
 using hex_uint64 = uint64_t;
 using hex_float  = float;
 using hex_double = double;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// METHODS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+template <typename T = int>
+static T hexLimit() noexcept
+{
+    return static_cast<T>( std::numeric_limits<T>::max() );
+}
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 

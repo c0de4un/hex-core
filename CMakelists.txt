@@ -53,13 +53,16 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}cfg/hex_api.hpp"
 
     "${HEX_CORE_PUBLIC}cfg/hex_atomic.hpp"    "${HEX_CORE_PUBLIC}cfg/hex_map.hpp"
+    "${HEX_CORE_PUBLIC}cfg/hex_map.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_mutex.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_numeric.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_platform.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_vector.hpp"
     # ASYNC
     "${HEX_CORE_PUBLIC}async/SpinLock.hpp"
-    # MEMORY
+
+    # COLLECTIONS
+    "${HEX_CORE_PUBLIC}collections/IDStorage.hpp"    # MEMORY
     "${HEX_CORE_PUBLIC}memory/ReferenceBlock.hpp"
     "${HEX_CORE_PUBLIC}memory/IReferenceUser.hxx"
     "${HEX_CORE_PUBLIC}memory/MemoryManager.hpp"
