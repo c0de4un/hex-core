@@ -51,8 +51,8 @@ set( HEX_CORE_PUBLIC "${HEX_CORE_SRC}/public/hex/core/" )
 set( HEX_CORE_HEADERS
     # CFG
     "${HEX_CORE_PUBLIC}cfg/hex_api.hpp"
-
-    "${HEX_CORE_PUBLIC}cfg/hex_atomic.hpp"    "${HEX_CORE_PUBLIC}cfg/hex_map.hpp"
+    "${HEX_CORE_PUBLIC}cfg/hex_atomic.hpp"
+    "${HEX_CORE_PUBLIC}cfg/hex_map.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_map.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_mutex.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_numeric.hpp"
@@ -62,14 +62,25 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}async/SpinLock.hpp"
 
     # COLLECTIONS
-    "${HEX_CORE_PUBLIC}collections/IDStorage.hpp"    # MEMORY
+    "${HEX_CORE_PUBLIC}collections/IDStorage.hpp"
+    # MEMORY
     "${HEX_CORE_PUBLIC}memory/ReferenceBlock.hpp"
     "${HEX_CORE_PUBLIC}memory/IReferenceUser.hxx"
     "${HEX_CORE_PUBLIC}memory/MemoryManager.hpp"
     "${HEX_CORE_PUBLIC}memory/SharedPointer.hpp"
     # ECS
-    "${HEX_CORE_PUBLIC}ecs/ecs_types.hpp"
     "${HEX_CORE_PUBLIC}ecs/Component.hpp"
+    "${HEX_CORE_PUBLIC}ecs/ComponentsManager.hpp"
+    "${HEX_CORE_PUBLIC}ecs/ecs_types.hpp"
+    "${HEX_CORE_PUBLIC}ecs/EntitiesManager.hpp"
+    "${HEX_CORE_PUBLIC}ecs/Entity.hpp"
+    "${HEX_CORE_PUBLIC}ecs/Event.hpp"
+    "${HEX_CORE_PUBLIC}ecs/EventsManager.hpp"
+    "${HEX_CORE_PUBLIC}ecs/IEntity.hxx"
+    "${HEX_CORE_PUBLIC}ecs/IEvent.hxx"
+    "${HEX_CORE_PUBLIC}ecs/ISystem.hxx"
+    "${HEX_CORE_PUBLIC}ecs/System.hpp"
+    "${HEX_CORE_PUBLIC}ecs/SystemsManager.hpp"
     # PCH
     "${HEX_CORE_PUBLIC}hex_core.hpp"
 )
@@ -101,6 +112,13 @@ set( HEX_CORE_SOURCES
     "${HEX_CORE_PRIVATE}async/SpinLock.cpp"
     # MEMORY
     "${HEX_CORE_PRIVATE}memory/MemoryManager.cpp"
+    # ECS
+    "${HEX_CORE_PRIVATE}ecs/ComponentsManager.cpp"
+    "${HEX_CORE_PRIVATE}ecs/EntitiesManager.cpp"
+    "${HEX_CORE_PRIVATE}ecs/Entity.cpp"
+    "${HEX_CORE_PRIVATE}ecs/EventsManager.cpp"
+    "${HEX_CORE_PRIVATE}ecs/System.cpp"
+    "${HEX_CORE_PRIVATE}ecs/SystemsManager.cpp"
 )
 
 # DEBUG
