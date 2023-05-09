@@ -52,43 +52,11 @@ namespace hex
 
         ComponentsManager::ComponentsManager()
             :
-            mIDStorageMutex(),
-            mIDStorages()
+            BaseManager()
         {
         }
 
-        ComponentsManager::~ComponentsManager() noexcept
-        {
-            this->deleteIDStorages();
-        }
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // GETTERS & SETTERS
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        ComponentsManager::comp_storage_t* ComponentsManager::getIDStorageByTypeID(const ecs_TypeID typeID)
-        {
-            hexLock lock(mIDStorageMutex);
-
-            ComponentsManager::comp_storage_t* storage(nullptr);
-
-            auto pos(mIDStorages.find(typeID));
-            if (pos == mIDStorages.end())
-            {
-                storage = new ComponentsManager::comp_storage_t();
-
-                mIDStorages.insert(
-                    std::pair<ecs_TypeID, ComponentsManager::comp_storage_t*>(
-                        typeID,
-                        storage
-                    )
-                );
-            }
-            else
-                storage = pos->second;
-
-            return storage;
-        }
+        ComponentsManager::~ComponentsManager() noexcept = default;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // METHODS
@@ -124,43 +92,34 @@ namespace hex
             mInstance = nullptr;
         }
 
-        ecs_ObjectID ComponentsManager::generateID(const ecs_TypeID typeID)
+        ecs_ObjectID ComponentsManager::generateComponentID(const ecs_TypeID typeID)
         {
 #ifdef HEX_DEBUG // DEBUG
-            assert(mInstance && "ComponentsManager::generateID: not initialized");
+            assert(mInstance && "ComponentsManager::generateComponentID: not initialized");
 #endif // DEBUG
 
-            ComponentsManager::comp_storage_t* const idStorage(
-                mInstance->getIDStorageByTypeID(typeID)
-            );
+            if (!mInstance)
+                return ECS_INVALID_OBJECT_ID;
 
-            return idStorage->reserve();
+            return mInstance->generateID(typeID);
         }
 
-        void ComponentsManager::releaseID(const ecs_TypeID typeID, const ecs_ObjectID id)
+        void ComponentsManager::releaseComponentID(const ecs_TypeID typeID, const ecs_ObjectID id) noexcept
         {
 #ifdef HEX_DEBUG // DEBUG
-            assert(mInstance && "ComponentsManager::releaseID: not initialized");
+            assert(mInstance && "ComponentsManager::releaseComponentID: not initialized");
 #endif // DEBUG
 
-            ComponentsManager::comp_storage_t* const idStorage(
-                mInstance->getIDStorageByTypeID(typeID)
-            );
+            if (!mInstance)
+                return;
 
-            idStorage->put(id);
-        }
-
-        void ComponentsManager::deleteIDStorages() noexcept
-        {
-            hexLock lock(mIDStorageMutex, true);
-            try { lock.lock(); }
-            catch (...) { /** void */ }
-
-            auto       iter(mIDStorages.begin());
-            const auto end_iter(mIDStorages.cend());
-            while (iter != end_iter)
+            try
             {
-                delete iter->second;
+                mInstance->releaseID(typeID, id);
+            }
+            catch (...)
+            {
+                // void
             }
         }
 

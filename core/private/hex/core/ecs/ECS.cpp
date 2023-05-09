@@ -58,6 +58,7 @@ namespace hex
 #endif // LOG
 
             ecsComponents::Initialize();
+            ecs_Systems::Initialize();
         }
 
         void ECS::Terminate() noexcept
@@ -67,6 +68,7 @@ namespace hex
 #endif // LOG
 
             ecsComponents::Terminate();
+            ecs_Systems::Terminate();
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

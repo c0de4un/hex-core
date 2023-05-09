@@ -17,31 +17,10 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::core::api
-#ifndef HEX_CORE_CFG_API_HPP
-    #include <hex/core/cfg/hex_api.hpp>
-#endif /// !HEX_CORE_CFG_API_HPP
-
-// Include hex::ecs::types
-#ifndef HEX_ECS_TYPES_HPP
-    #include <hex/core/ecs/ecs_types.hpp>
-#endif /// !HEX_ECS_TYPES_HPP
-
-// Include hex::core::mutex
-#ifndef HEX_CORE_CFG_MUTEX_HPP
-    #include <hex/core/cfg/hex_mutex.hpp>
-#endif /// !HEX_CORE_CFG_MUTEX_HPP
-
-// Include hex::core::IDStorage
-#ifndef HEX_CORE_ID_STORAGE_HPP
-    #include <hex/core/collections/IDStorage.hpp>
-#endif /// !HEX_CORE_ID_STORAGE_HPP
-
-// Include hex::core::map
-#ifndef HEX_CORE_CFG_MAP_HPP
-    #include <hex/core/cfg/hex_map.hpp>
-#endif /// !HEX_CORE_CFG_MAP_HPP
-
+// Include hex::ecs::BaseManager
+#ifndef HEX_ECS_BASE_MANAGER_HPP
+    #include <hex/core/ecs/BaseManager.hpp>
+#endif /// !HEX_ECS_BASE_MANAGER_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
@@ -59,7 +38,7 @@ namespace hex
         // ComponentsManager
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        HEX_API class ComponentsManager final
+        HEX_API class ComponentsManager final : public BaseManager
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,37 +56,16 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // TYPES
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            using comp_storage_t = hexIDStorage<ecs_ObjectID>;
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // FIELDS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             static ComponentsManager* mInstance;
-
-            mutable hexMutex                    mIDStorageMutex;
-            hexMap<ecs_TypeID, comp_storage_t*> mIDStorages;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // CONSTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             explicit ComponentsManager();
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // GETTERS & SETTERS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            comp_storage_t* getIDStorageByTypeID(const ecs_TypeID typeID);
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // METHODS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            inline void deleteIDStorages() noexcept;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // DELETED
@@ -128,7 +86,7 @@ namespace hex
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            ~ComponentsManager() noexcept;
+            virtual ~ComponentsManager() noexcept;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS
@@ -137,8 +95,8 @@ namespace hex
             static void Initialize();
             static void Terminate() noexcept;
 
-            static ecs_ObjectID generateID(const ecs_TypeID typeID);
-            static void releaseID(const ecs_TypeID typeID, const ecs_ObjectID id);
+            static ecs_ObjectID generateComponentID(const ecs_TypeID typeID);
+            static void releaseComponentID(const ecs_TypeID typeID, const ecs_ObjectID id) noexcept;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

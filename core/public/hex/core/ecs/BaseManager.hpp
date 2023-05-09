@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_ECS_SYSTEM_HPP
-#define HEX_ECS_SYSTEM_HPP
+#ifndef HEX_ECS_BASE_MANAGER_HPP
+#define HEX_ECS_BASE_MANAGER_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -17,13 +17,34 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::ecs::ISystem
-#ifndef HEX_ECS_I_SYSTEM_HXX
-    #include <hex/core/ecs/ISystem.hxx>
-#endif /// !HEX_ECS_I_SYSTEM_HXX
+// Include hex::core::api
+#ifndef HEX_CORE_CFG_API_HPP
+    #include <hex/core/cfg/hex_api.hpp>
+#endif /// !HEX_CORE_CFG_API_HPP
+
+// Include hex::ecs::types
+#ifndef HEX_ECS_TYPES_HPP
+    #include <hex/core/ecs/ecs_types.hpp>
+#endif /// !HEX_ECS_TYPES_HPP
+
+// Include hex::core::mutex
+#ifndef HEX_CORE_CFG_MUTEX_HPP
+    #include <hex/core/cfg/hex_mutex.hpp>
+#endif /// !HEX_CORE_CFG_MUTEX_HPP
+
+// Include hex::core::IDStorage
+#ifndef HEX_CORE_ID_STORAGE_HPP
+    #include <hex/core/collections/IDStorage.hpp>
+#endif /// !HEX_CORE_ID_STORAGE_HPP
+
+// Include hex::core::map
+#ifndef HEX_CORE_CFG_MAP_HPP
+    #include <hex/core/cfg/hex_map.hpp>
+#endif /// !HEX_CORE_CFG_MAP_HPP
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// System
+// TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
@@ -34,7 +55,11 @@ namespace hex
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        HEX_API class System : public ISystem
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // BaseManager
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        HEX_API class BaseManager
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -52,20 +77,44 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // TYPES
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            using comp_storage_t = hexIDStorage<ecs_ObjectID>;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // FIELDS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            mutable hexMutex                    mIDStorageMutex;
+            hexMap<ecs_TypeID, comp_storage_t*> mIDStorages;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // CONSTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            explicit BaseManager();
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // GETTERS & SETTERS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            comp_storage_t* getIDStorageByTypeID(const ecs_TypeID typeID);
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            inline void deleteIDStorages() noexcept;
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // DELETED
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            BaseManager(const BaseManager&)            = delete;
+            BaseManager& operator=(const BaseManager&) = delete;
+            BaseManager(BaseManager&&)                 = delete;
+            BaseManager& operator=(BaseManager&&)      = delete;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -77,9 +126,14 @@ namespace hex
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            virtual ~BaseManager() noexcept;
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // OVERRIDE.ISystem
+            // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            ecs_ObjectID generateID(const ecs_TypeID typeID);
+            void releaseID(const ecs_TypeID typeID, const ecs_ObjectID id);
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -93,4 +147,4 @@ namespace hex
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_ECS_SYSTEM_HPP
+#endif /// !HEX_ECS_BASE_MANAGER_HPP

@@ -68,6 +68,7 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}memory/MemoryManager.hpp"
     "${HEX_CORE_PUBLIC}memory/SharedPointer.hpp"
     # ECS
+    "${HEX_CORE_PUBLIC}ecs/BaseManager.hpp"
     "${HEX_CORE_PUBLIC}ecs/Component.hpp"
     "${HEX_CORE_PUBLIC}ecs/ComponentsManager.hpp"
     "${HEX_CORE_PUBLIC}ecs/ECS.hpp"
@@ -113,6 +114,7 @@ set( HEX_CORE_SOURCES
     # MEMORY
     "${HEX_CORE_PRIVATE}memory/MemoryManager.cpp"
     # ECS
+    "${HEX_CORE_PRIVATE}ecs/BaseManager.cpp"
     "${HEX_CORE_PRIVATE}ecs/ComponentsManager.cpp"
     "${HEX_CORE_PRIVATE}ecs/ECS.cpp"
     "${HEX_CORE_PRIVATE}ecs/EntitiesManager.cpp"

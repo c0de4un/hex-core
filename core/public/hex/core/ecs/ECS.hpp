@@ -34,6 +34,16 @@
     #include <hex/core/ecs/ComponentsManager.hpp>
 #endif /// !HEX_ECS_COMPONENTS_MANAGER_HPP
 
+// Include hex::ecs::System
+#ifndef HEX_ECS_SYSTEM_HPP
+    #include <hex/core/ecs/System.hpp>
+#endif /// !HEX_ECS_SYSTEM_HPP
+
+// Include hex::ecs::SystemsManager
+#ifndef HEX_ECS_SYSTEMS_MANAGER_HPP
+    #include <hex/core/ecs/SystemsManager.hpp>
+#endif /// !HEX_ECS_SYSTEMS_MANAGER_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
