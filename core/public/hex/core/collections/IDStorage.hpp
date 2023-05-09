@@ -164,19 +164,19 @@ namespace hex
                 assert(!mReserved.empty() && "IDStorage::put: invalid logic, reserved ids are empty");
 #endif // DEBUG
 
-                V item(0);
-                const reservedCount = mReserved.size();
+                V            item(0);
+                const size_t reservedCount = mReserved.size();
                 for (V i = 0; i < reservedCount; i++)
                 {
                     item = mReserved.at(i);
                     if (item == id)
                     {
-                        mReserved.erase(i);
+                        mReserved.erase(mReserved.begin() + i);
                         break;
                     }
                 }
 
-                mAvailable.push_back();
+                mAvailable.push_back(id);
             }
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

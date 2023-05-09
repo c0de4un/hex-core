@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_ECS_COMPONENTS_MANAGER_HPP
-#define HEX_ECS_COMPONENTS_MANAGER_HPP
+#ifndef HEX_ECS_HPP
+#define HEX_ECS_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -22,26 +22,17 @@
     #include <hex/core/cfg/hex_api.hpp>
 #endif /// !HEX_CORE_CFG_API_HPP
 
-// Include hex::ecs::types
-#ifndef HEX_ECS_TYPES_HPP
-    #include <hex/core/ecs/ecs_types.hpp>
-#endif /// !HEX_ECS_TYPES_HPP
+// Compiler-Only
 
-// Include hex::core::mutex
-#ifndef HEX_CORE_CFG_MUTEX_HPP
-    #include <hex/core/cfg/hex_mutex.hpp>
-#endif /// !HEX_CORE_CFG_MUTEX_HPP
+// Include hex::ecs::Component
+#ifndef HEX_ECS_COMPONENT_HPP
+    #include <hex/core/ecs/Component.hpp>
+#endif /// !HEX_ECS_COMPONENT_HPP
 
-// Include hex::core::IDStorage
-#ifndef HEX_CORE_ID_STORAGE_HPP
-    #include <hex/core/collections/IDStorage.hpp>
-#endif /// !HEX_CORE_ID_STORAGE_HPP
-
-// Include hex::core::map
-#ifndef HEX_CORE_CFG_MAP_HPP
-    #include <hex/core/cfg/hex_map.hpp>
-#endif /// !HEX_CORE_CFG_MAP_HPP
-
+// Include hex::ecs::ComponentsManager
+#ifndef HEX_ECS_COMPONENTS_MANAGER_HPP
+    #include <hex/core/ecs/ComponentsManager.hpp>
+#endif /// !HEX_ECS_COMPONENTS_MANAGER_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
@@ -56,10 +47,10 @@ namespace hex
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // ComponentsManager
+        // ECS
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        HEX_API class ComponentsManager final
+        HEX_API class ECS final
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,46 +68,19 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // TYPES
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            using comp_storage_t = hexIDStorage<ecs_ObjectID>;
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // FIELDS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            static ComponentsManager* mInstance;
-
-            mutable hexMutex                    mIDStorageMutex;
-            hexMap<ecs_TypeID, comp_storage_t*> mIDStorages;
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // CONSTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            explicit ComponentsManager();
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // GETTERS & SETTERS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            comp_storage_t* getIDStorageByTypeID(const ecs_TypeID typeID);
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // METHODS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            inline void deleteIDStorages() noexcept;
+            explicit ECS() noexcept;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // DELETED
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            ComponentsManager(const ComponentsManager&)            = delete;
-            ComponentsManager& operator=(const ComponentsManager&) = delete;
-            ComponentsManager(ComponentsManager&&)                 = delete;
-            ComponentsManager& operator=(ComponentsManager&&)      = delete;
+            ECS(const ECS&)            = delete;
+            ECS& operator=(const ECS&) = delete;
+            ECS(ECS&&)                 = delete;
+            ECS& operator=(ECS&&)      = delete;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -128,7 +92,7 @@ namespace hex
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            ~ComponentsManager() noexcept;
+            ~ECS() noexcept;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS
@@ -136,9 +100,6 @@ namespace hex
 
             static void Initialize();
             static void Terminate() noexcept;
-
-            static ecs_ObjectID generateID(const ecs_TypeID typeID);
-            static void releaseID(const ecs_TypeID typeID, const ecs_ObjectID id);
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -150,8 +111,8 @@ namespace hex
 
 }
 
-using ecsComponents = hex::ecs::ComponentsManager;
+using hexECS = hex::ecs::ECS;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_ECS_COMPONENTS_MANAGER_HPP
+#endif /// !HEX_ECS_HPP
