@@ -22,6 +22,16 @@
     #include <hex/core/ecs/ISystem.hxx>
 #endif /// !HEX_ECS_I_SYSTEM_HXX
 
+// Include hex::core::mutex
+#ifndef HEX_CORE_CFG_MUTEX_HPP
+    #include <hex/core/cfg/hex_mutex.hpp>
+#endif /// !HEX_CORE_CFG_MUTEX_HPP
+
+// Include hex::core::atomic
+#ifndef HEX_CORE_CFG_ATOMIC_HPP
+    #include <hex/core/cfg/hex_atomic.hpp>
+#endif /// !HEX_CORE_CFG_ATOMIC_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // System
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -52,20 +62,60 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // ALIASES
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            using state_t = unsigned char;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // CONSTANTS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            static constexpr const state_t STATE_NONE     = 0;
+            static constexpr const state_t STATE_STARTING = 1;
+            static constexpr const state_t STATE_RUNNING  = 2;
+            static constexpr const state_t STATE_PAUSING  = 3;
+            static constexpr const state_t STATE_PAUSED   = 4;
+            static constexpr const state_t STATE_STOPPING = 5;
+
+            const ecs_TypeID   mTypeID;
+            const ecs_ObjectID mID;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // FIELDS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            hex_atomic<state_t> mState;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // CONSTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            explicit System(const ecs_TypeID in_type);
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // GETTERS & SETTERS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            void setState(const state_t state) noexcept;
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            virtual bool onStart();
+            virtual bool onResume();
+            virtual void onPause();
+            virtual void onStop();
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // DELETED
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            System(const System&)            = delete;
+            System& operator=(const System&) = delete;
+            System(System&&)                 = delete;
+            System& operator=(System&&)      = delete;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -77,9 +127,21 @@ namespace hex
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            virtual ~System() noexcept;
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // OVERRIDE.ISystem
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            virtual ecs_TypeID getTypeID() const noexcept final;
+            virtual ecs_ObjectID getID() const noexcept   final;
+
+            virtual bool isStarted() const noexcept final;
+            virtual bool isPaused() const noexcept  final;
+
+            virtual bool Start()         final;
+            virtual void Pause()         final;
+            virtual void Stop() noexcept final;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
