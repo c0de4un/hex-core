@@ -82,6 +82,7 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}ecs/ISystem.hxx"
     "${HEX_CORE_PUBLIC}ecs/System.hpp"
     "${HEX_CORE_PUBLIC}ecs/SystemsManager.hpp"
+    "${HEX_CORE_PUBLIC}ecs/ESystems.hpp"
     # PCH
     "${HEX_CORE_PUBLIC}hex_core.hpp"
 )
