@@ -54,6 +54,7 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}cfg/hex_atomic.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_map.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_map.hpp"
+    "${HEX_CORE_PUBLIC}cfg/hex_memory.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_mutex.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_numeric.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_platform.hpp"
@@ -86,6 +87,10 @@ set( HEX_CORE_HEADERS
     # APPLICATION
     "${HEX_CORE_PUBLIC}app/IApplication.hxx"
     "${HEX_CORE_PUBLIC}app/Application.hpp"
+    # GRAPHICS
+    "${HEX_CORE_PUBLIC}graphics/IGraphics.hxx"
+    "${HEX_CORE_PUBLIC}graphics/GraphicsSystem.hpp"
+    "${HEX_CORE_PUBLIC}graphics/GraphicsSettings.hpp"
     # PCH
     "${HEX_CORE_PUBLIC}hex_core.hpp"
 )
@@ -128,6 +133,8 @@ set( HEX_CORE_SOURCES
     "${HEX_CORE_PRIVATE}ecs/SystemsManager.cpp"
     # APPLICATION
     "${HEX_CORE_PRIVATE}app/Application.cpp"
+    # GRAPHICS
+    "${HEX_CORE_PRIVATE}graphics/GraphicsSystem.cpp"
 )
 
 # DEBUG
