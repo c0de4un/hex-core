@@ -113,7 +113,6 @@ namespace hex
 #endif // DEBUG
 
                 mAvailable.reserve(capacity);
-                mAvailable.resize(reserve);
 
                 mReserved.reserve(capacity);
             }
@@ -122,7 +121,11 @@ namespace hex
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            ~IDStorage() noexcept = default;
+            ~IDStorage() noexcept
+            {
+                mAvailable.clear();
+                mReserved.clear();
+            }
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS

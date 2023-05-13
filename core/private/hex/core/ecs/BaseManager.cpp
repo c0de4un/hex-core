@@ -117,6 +117,8 @@ namespace hex
             while (iter != end_iter)
             {
                 delete iter->second;
+
+                iter++;
             }
         }
 
