@@ -111,6 +111,8 @@ namespace hex
 
 }
 
+using hexApp = hex::core::Application;
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 #endif /// !HEX_CORE_APPLICATION_HPP

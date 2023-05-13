@@ -82,6 +82,16 @@ namespace hex
             return state > System::STATE_RUNNING && state < System::STATE_PAUSING;
         }
 
+        ecs_TypeID System::getTypeID() const noexcept
+        {
+            return mTypeID;
+        }
+
+        ecs_ObjectID System::getID() const noexcept
+        {
+            return mID;
+        }
+
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // METHODS.System
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
