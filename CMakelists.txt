@@ -83,6 +83,9 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}ecs/System.hpp"
     "${HEX_CORE_PUBLIC}ecs/SystemsManager.hpp"
     "${HEX_CORE_PUBLIC}ecs/ESystems.hpp"
+    # APPLICATION
+    "${HEX_CORE_PUBLIC}app/IApplication.hxx"
+    "${HEX_CORE_PUBLIC}app/Application.hpp"
     # PCH
     "${HEX_CORE_PUBLIC}hex_core.hpp"
 )
@@ -123,6 +126,8 @@ set( HEX_CORE_SOURCES
     "${HEX_CORE_PRIVATE}ecs/EventsManager.cpp"
     "${HEX_CORE_PRIVATE}ecs/System.cpp"
     "${HEX_CORE_PRIVATE}ecs/SystemsManager.cpp"
+    # APPLICATION
+    "${HEX_CORE_PRIVATE}app/Application.cpp"
 )
 
 # DEBUG

@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_ECS_E_SYSTEMS_HPP
-#define HEX_ECS_E_SYSTEMS_HPP
+#ifndef HEX_CORE_I_APPLICATION_HXX
+#define HEX_CORE_I_APPLICATION_HXX
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -22,43 +22,40 @@
     #include <hex/core/cfg/hex_api.hpp>
 #endif /// !HEX_CORE_CFG_API_HPP
 
-// Include hex::ecs::types
-#ifndef HEX_ECS_TYPES_HPP
-    #include <hex/core/ecs/ecs_types.hpp>
-#endif /// !HEX_ECS_TYPES_HPP
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ESystems
+// IApplication
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
 {
 
-    namespace ecs
+    namespace core
     {
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        enum class ESystems : ecs_TypeID
+        HEX_API class IApplication
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // CONSTANTS
+            // META
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            HEX_SYSTEMS_MIN = 0,
-            APPLICATION     = 1,
-            GRAPHICS        = 2,
-            RENDER          = 3,
-            ASSETS          = 4,
-            AUDIO           = 5,
-            INPUT           = 6,
-            TASKS           = 7,
-            NET             = 8,
-            WEB             = 9,
-            HEX_SYSTEMS_MAX = 99,
+            HEX_INTERFACE
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        public:
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // DESTRUCTOR
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            virtual ~IApplication() noexcept = default;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -70,8 +67,6 @@ namespace hex
 
 }
 
-using hexESystems = hex::ecs::ESystems;
-
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_ECS_E_SYSTEMS_HPP
+#endif /// !HEX_CORE_I_APPLICATION_HXX

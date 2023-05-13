@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_ECS_I_SYSTEM_HXX
-#define HEX_ECS_I_SYSTEM_HXX
+#ifndef HEX_CORE_APPLICATION_HPP
+#define HEX_CORE_APPLICATION_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -17,34 +17,29 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::core::api
-#ifndef HEX_CORE_CFG_API_HPP
-    #include <hex/core/cfg/hex_api.hpp>
-#endif /// !HEX_CORE_CFG_API_HPP
+// Include hex::core::IApplication
+#ifndef HEX_CORE_I_APPLICATION_HXX
+    #include <hex/core/app/IApplication.hxx>
+#endif /// !HEX_CORE_I_APPLICATION_HXX
 
-// Include hex::ecs::types
-#ifndef HEX_ECS_TYPES_HPP
-    #include <hex/core/ecs/ecs_types.hpp>
-#endif /// !HEX_ECS_TYPES_HPP
-
-// Include hex::ecs::ESystems
-#ifndef HEX_ECS_E_SYSTEMS_HPP
-    #include <hex/core/ecs/ESystems.hpp>
-#endif /// !HEX_ECS_E_SYSTEMS_HPP
+// Include hex::ecs::System
+#ifndef HEX_ECS_SYSTEM_HPP
+    #include <hex/core/ecs/System.hpp>
+#endif /// !HEX_ECS_SYSTEM_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ISystem
+// Application
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
 {
 
-    namespace ecs
+    namespace core
     {
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        HEX_API class ISystem
+        HEX_API class Application : public hex::ecs::System, public IApplication
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -53,7 +48,34 @@ namespace hex
             // META
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            HEX_INTERFACE
+            HEX_CLASS
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        protected:
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // FIELDS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            static Application* mInstance;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // CONSTRUCTOR
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            explicit Application();
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // DELETED
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            Application(const Application&)            = delete;
+            Application& operator=(const Application&) = delete;
+            Application(Application&&)                 = delete;
+            Application& operator=(Application&&)      = delete;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -65,25 +87,19 @@ namespace hex
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual ~ISystem() noexcept = default;
+            virtual ~Application() noexcept;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // GETTERS & SETTERS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual ecs_TypeID getTypeID() const noexcept = 0;
-            virtual ecs_ObjectID getID() const noexcept   = 0;
-
-            virtual bool isStarted() const noexcept = 0;
-            virtual bool isPaused() const noexcept  = 0;
+            static Application* getInstance() noexcept;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual bool Start()         = 0;
-            virtual void Pause()         = 0;
-            virtual void Stop() noexcept = 0;
+            static void Terminate() noexcept;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -95,9 +111,6 @@ namespace hex
 
 }
 
-using ecs_ISystem = hex::ecs::ISystem;
-#define HEX_ECS_I_SYSTEM_DECL
-
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_ECS_I_SYSTEM_HXX
+#endif /// !HEX_CORE_APPLICATION_HPP
