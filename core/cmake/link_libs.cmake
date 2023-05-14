@@ -1,20 +1,7 @@
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# MODULES
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-# Flags for Clang
-target_compile_options( hex PUBLIC -fexceptions )
-
-# Link with hexEngine.Core
-target_include_directories( hex PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/core/public" )
-
-# Link with hexEngine.Patfrom
-target_include_directories( hex PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/${PLATFORM}/public" )
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# LIBRARIES
+# CORE
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # GLM
@@ -24,6 +11,15 @@ endif (NOT DEFINED GLM_INCLUDE_DIR)
 if ( NOT EXISTS "${GLM_INCLUDE_DIR}/vec3.hpp" )
     message( FATAL_ERROR "hexEngine - GLM not found at ${GLM_INCLUDE_DIR}" )
 endif ( NOT EXISTS "${GLM_INCLUDE_DIR}/vec3.hpp" )
-target_include_directories( hex PRIVATE "${GLM_INCLUDE_DIR}" )
+target_include_directories( ${HEX_BUILD_TARGETS} PRIVATE "${GLM_INCLUDE_DIR}" )
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# MODULES
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Dependencies defined by Modules
+foreach( HEX_MODULE_NAME ${HEX_MODULES_LIST} )
+    include( "${HEX_SRC_ROOT_DIR}/${HEX_MODULE_NAME}/link_libs.cmake" )
+endforeach()
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
