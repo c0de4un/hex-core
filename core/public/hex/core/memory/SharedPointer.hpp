@@ -73,31 +73,31 @@ namespace hex
 
             inline void reserve()
             {
-                if (mAddress)
-                {
-                    hexMemory* const memoryManager(hexMemory::getInstance());
+                if (!mAddress)
+                    return;
 
-                    if (memoryManager)
-                        memoryManager->addReferenceUser(static_cast<void*>(mAddress), static_cast<IReferenceUser*>(this));
-                }
+                hexMemory* const memoryManager(hexMemory::getInstance());
+
+                if (memoryManager)
+                    memoryManager->addReferenceUser(static_cast<void*>(mAddress), static_cast<IReferenceUser*>(this));
             }
 
             inline void release() noexcept
             {
-                if (mAddress)
-                {
-                    hexMemory* const memoryManager(hexMemory::getInstance());
+                if (!mAddress)
+                    return;
 
-                    if (memoryManager)
+                hexMemory* const memoryManager(hexMemory::getInstance());
+
+                if (memoryManager)
+                {
+                    try
                     {
-                        try
-                        {
-                            memoryManager->removeReferenceUser(static_cast<void>(mAddress), static_cast<IReferenceUser*>(this));
-                        }
-                        catch (...)
-                        {
-                            // void
-                        }
+                        memoryManager->removeReferenceUser(static_cast<void*>(mAddress), static_cast<IReferenceUser*>(this));
+                    }
+                    catch (...)
+                    {
+                        // void
                     }
                 }
             }
