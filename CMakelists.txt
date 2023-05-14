@@ -185,6 +185,8 @@ endif ( HEX_CORE_BUILD_MODE STREQUAL "STATIC" )
 
 set( HEX_BUILD_TARGETS hex )
 
+include( "${CMAKE_CURRENT_SOURCE_DIR}/core/cmake/link_modules.cmake" )
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # LINK LIBRARIES
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
