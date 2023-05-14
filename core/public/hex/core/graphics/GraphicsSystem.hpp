@@ -24,7 +24,7 @@
 
 // Include hex::core::IGraphics
 #ifndef HEX_CORE_I_GRAPHICS_HXX
-#include <hex/core/graphics/IGraphics.hxx>
+    #include <hex/core/graphics/IGraphics.hxx>
 #endif /// !HEX_CORE_I_GRAPHICS_HXX
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -120,6 +120,8 @@ namespace hex
     }
 
 }
+
+using hexGraphics = hex::core::GraphicsSystem;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 

@@ -9,7 +9,7 @@
 **/
 
 #ifndef HEX_CORE_I_GRAPHICS_HXX
-#define 
+#define HEX_CORE_I_GRAPHICS_HXX
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
