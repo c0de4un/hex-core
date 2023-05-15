@@ -8,10 +8,93 @@
  * SOFTWARE.
 **/
 
+#ifndef HEX_ECS_I_ENTITY_HXX
+#define HEX_ECS_I_ENTITY_HXX
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// Include hex::ecs::types
+#ifndef HEX_ECS_TYPES_HPP
+    #include <hex/core/ecs/ecs_types.hpp>
+#endif /// !HEX_ECS_TYPES_HPP
+
+// Include hex::core::api
+#ifndef HEX_CORE_CFG_API_HPP
+    #include <hex/core/cfg/hex_api.hpp>
+#endif /// !HEX_CORE_CFG_API_HPP
+
+// Include hex::core::memory
+#ifndef HEX_CORE_CFG_MEMORY_HPP
+    #include <hex/core/cfg/hex_memory.hpp>
+#endif /// !HEX_CORE_CFG_MEMORY_HPP
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// FORWARD-DECLARATIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Forward-Declare hex::ecs::Component
+#ifndef HEX_ECS_COMPONENT_DECL
+#define HEX_ECS_COMPONENT_DECL
+namespace hex { namespace ecs { struct Component; } }
+using ecsComponent = hex::ecs::Component;
+#endif /// !HEX_ECS_COMPONENT_DECL
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// IEntity
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace hex
+{
+
+    namespace ecs
+    {
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        HEX_API class IEntity
+        {
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // META
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            HEX_INTERFACE
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        public:
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // DESTRUCTOR
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            virtual ~IEntity() noexcept = default;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // METHODS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            virtual void addComponent(hexShared<ecsComponent> pComponent)                = 0;
+            virtual void removeComponent(const ecs_TypeID typeID, const ecs_ObjectID id) = 0;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        };
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    }
+
+}
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+#endif /// !HEX_ECS_I_ENTITY_HXX
