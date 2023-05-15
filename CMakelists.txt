@@ -91,6 +91,9 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}graphics/IGraphics.hxx"
     "${HEX_CORE_PUBLIC}graphics/GraphicsSystem.hpp"
     "${HEX_CORE_PUBLIC}graphics/GraphicsSettings.hpp"
+    # RENDER
+    "${HEX_CORE_PUBLIC}render/IRenderer.hxx"
+    "${HEX_CORE_PUBLIC}render/RenderSystem.hpp"
     # PCH
     "${HEX_CORE_PUBLIC}hex_core.hpp"
 )
@@ -135,6 +138,8 @@ set( HEX_CORE_SOURCES
     "${HEX_CORE_PRIVATE}app/Application.cpp"
     # GRAPHICS
     "${HEX_CORE_PRIVATE}graphics/GraphicsSystem.cpp"
+    # RENDER
+    "${HEX_CORE_PRIVATE}render/RenderSystem.cpp"
 )
 
 # DEBUG
