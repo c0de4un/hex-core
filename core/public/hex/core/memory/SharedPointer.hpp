@@ -103,13 +103,6 @@ namespace hex
             }
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // DELETED
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            SharedPointer(SharedPointer&&)            = delete;
-            SharedPointer& operator=(SharedPointer&&) = delete;
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         public:
 
@@ -126,11 +119,17 @@ namespace hex
                 reserve();
             }
 
-            SharedPointer(const SharedPointer& other)
+            SharedPointer(const SharedPointer<T>& other)
                 :
                 mAddress(other.mAddress)
             {
                 reserve();
+            }
+
+            SharedPointer(SharedPointer<T>&& other)
+                : mAddress(other.mAddress)
+            {
+                other.mAddress = nullptr;
             }
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
