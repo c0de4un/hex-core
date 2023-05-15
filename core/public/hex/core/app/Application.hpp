@@ -27,6 +27,16 @@
     #include <hex/core/ecs/System.hpp>
 #endif /// !HEX_ECS_SYSTEM_HPP
 
+// Include hex::core::memory
+#ifndef HEX_CORE_CFG_MEMORY_HPP
+    #include <hex/core/cfg/hex_memory.hpp>
+#endif /// !HEX_CORE_CFG_MEMORY_HPP
+
+// Include hex::core::mutex
+#ifndef HEX_CORE_CFG_MUTEX_HPP
+    #include <hex/core/cfg/hex_mutex.hpp>
+#endif /// !HEX_CORE_CFG_MUTEX_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Application
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -60,7 +70,8 @@ namespace hex
             // FIELDS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            static Application* mInstance;
+            static hexMutex               mInstanceMutex;
+            static hexShared<Application> mInstance;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // CONSTRUCTOR
@@ -93,7 +104,7 @@ namespace hex
             // GETTERS & SETTERS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            static Application* getInstance() noexcept;
+            static hexShared<Application> getInstance() noexcept;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS

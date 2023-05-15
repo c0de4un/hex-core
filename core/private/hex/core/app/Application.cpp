@@ -44,7 +44,8 @@ namespace hex
         // FIELDS
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        Application* Application::mInstance(nullptr);
+        hexMutex               Application::mInstanceMutex;
+        hexShared<Application> Application::mInstance(nullptr);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // CONSTRUCTOR & DESTRUCTOR
@@ -61,8 +62,10 @@ namespace hex
         // GETTERS & SETTERS
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        Application* Application::getInstance() noexcept
+        hexShared<Application> Application::getInstance() noexcept
         {
+            hexLock lock(mInstanceMutex);
+
             return mInstance;
         }
 
@@ -76,12 +79,13 @@ namespace hex
             hexLog::Info("Application::Terminate");
 #endif // LOG
 
+            auto instance(getInstance());
+
 #ifdef HEX_DEBUG // DEBUG
-            assert(mInstance && "Application::Terminate: already terminated, fix logic");
+            assert(instance.get() && "Application::Terminate: already terminated, fix logic");
 #endif // DEBUG
 
-            delete mInstance;
-            mInstance = nullptr;
+            instance.reset();
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
