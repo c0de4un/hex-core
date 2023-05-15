@@ -122,9 +122,11 @@ namespace hex
             if (!hasNext)
                 return nullptr;
 
-            iter++;
+            auto result(iter->second);
 
-            return iter->second;
+            in_iter++;
+
+            return result;
         }
 
         ReferenceBlock* MemoryManager::getReferenceBlock(void* pAddress, const bool allocate)
@@ -175,12 +177,14 @@ namespace hex
             IReferenceUser*             user(nullptr);
             const auto                  end_iter(mReferencesBlocks.cend());
             auto                        iter(mReferencesBlocks.begin());
+#ifdef HEX_MEMORY_DEBUG // MEMORY-DEBUG
+            void*                       address(iter == end_iter ? nullptr : iter->first);
+#endif // MEMORY-DEBUG
             ReferenceBlock*             referenceBlock_ptr(getNextReferenceBlock(iter));
             while (referenceBlock_ptr)
             {
 #ifdef HEX_DEBUG // DEBUG
                     assert(referenceBlock_ptr && "MemoryManager::deleteObjects: reference block is null");
-                    assert(referenceBlock_ptr->mCounter > 0 && "MemoryManager::deleteObjects: bad reference block deletion logic, counter is 0");
 #endif // DEBUG
                 ReferenceBlock& block(*referenceBlock_ptr);
 
@@ -191,6 +195,16 @@ namespace hex
                 // Get any available user for deletion logic
                 hexVector<IReferenceUser*>& users(block.mUsers);
                 usersCount = users.size();
+
+#ifdef HEX_MEMORY_DEBUG // MEMORY-DEBUG
+                std::string logMsg("MemoryManager::deleteObjects: address=");
+                logMsg += std::to_string( reinterpret_cast<size_t>(address) );
+                logMsg += "; counter=";
+                logMsg += std::to_string(referenceBlock_ptr->mCounter);
+                logMsg += "; users.count=";
+                logMsg += std::to_string(usersCount);
+                hexLog::Debug(logMsg.c_str());
+#endif // MEMORY-DEBUG
 
 #ifdef HEX_DEBUG // DEBUG
                 assert(usersCount > 0 && "MemoryManager::deleteObjects: bad reference block deletion logic, size is 0");
@@ -213,6 +227,9 @@ namespace hex
                 block.mUsers.clear(); // Trigger all smart-points destructors
 
                 referenceBlock_ptr = getNextReferenceBlock(iter);
+#ifdef HEX_MEMORY_DEBUG // MEMORY-DEBUG
+                address = referenceBlock_ptr ? iter->first : nullptr;
+#endif // MEMORY-DEBUG
             }
         }
 
@@ -250,7 +267,31 @@ namespace hex
         {
             ReferenceBlock* const block(getReferenceBlock(pAddress, true));
             block->mCounter++;
-            block->mUsers.push_back(pUser);
+
+            bool            isEmptySlotFound(false);
+            const size_t    usersCount(block->mUsers.size());
+            for (size_t i = 0; i < usersCount; i++)
+            {
+                if (!block->mUsers[i])
+                {
+                    isEmptySlotFound = true;
+                    block->mUsers[i] = pUser;
+                    break;
+                }
+            }
+
+            if (!isEmptySlotFound)
+                block->mUsers.push_back(pUser);
+
+#ifdef HEX_MEMORY_DEBUG // MEMORY-DEBUG
+            std::string logMsg("MemoryManager::addReferenceUser: address=");
+            logMsg += std::to_string(reinterpret_cast<size_t>(pAddress));
+            logMsg += "; counter=";
+            logMsg += std::to_string(block->mCounter);
+            logMsg += "; previous mReferencesBlocks.size=";
+            logMsg += std::to_string(mReferencesBlocks.size());
+            hexLog::Debug(logMsg.c_str());
+#endif // MEMORY-DEBUG
 
             block->mMutex->unlock();
         }
@@ -261,7 +302,30 @@ namespace hex
             if (!block)
                 return;
 
+            IReferenceUser* user(nullptr);
+            const size_t    usersCount(block->mUsers.size());
+            for (size_t i = 0; i < usersCount; i++)
+            {
+                user = block->mUsers[i];
+                if (user == pUser)
+                {
+                    block->mUsers[i] = nullptr;
+                    break;
+                }
+            }
+
             block->mCounter--;
+
+#ifdef HEX_MEMORY_DEBUG // MEMORY-DEBUG
+            std::string logMsg("MemoryManager::removeReferenceUser: address=");
+            logMsg += std::to_string(reinterpret_cast<size_t>(pAddress));
+            logMsg += "; counter=";
+            logMsg += std::to_string(block->mCounter);
+            logMsg += "; previous mReferencesBlocks.size=";
+            logMsg += std::to_string(mReferencesBlocks.size());
+            hexLog::Debug(logMsg.c_str());
+#endif // MEMORY-DEBUG
+
             if (block->mCounter < 1)
             {
                 pUser->onDeleteObject();
@@ -272,6 +336,15 @@ namespace hex
 
                 delete block->mMutex; // Trigger unlock() through destructor
                 delete block;
+
+#ifdef HEX_MEMORY_DEBUG // MEMORY-DEBUG
+            std::string logMsg("MemoryManager::removeReferenceUser: address=");
+            logMsg += std::to_string(reinterpret_cast<size_t>(pAddress));
+            logMsg += "; block deleted. new mReferencesBlocks.size=";
+            logMsg += std::to_string(mReferencesBlocks.size());
+            hexLog::Debug(logMsg.c_str());
+#endif // MEMORY-DEBUG
+
                 return;
             }
 

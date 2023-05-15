@@ -20,6 +20,13 @@ if ( NOT DEFINED HEX_BUILD_TYPES )
         add_definitions ( -DHEX_LOGGING=1 )
     endif ( NOT DEFINED HEX_LOGGING AND HEX_DEBUG )
 
+    if ( NOT DEFINED HEX_MEMORY_DEBUG )
+        message( "hexEngine - Memory-Management debugging is disabled. Set <HEX_MEMORY_DEBUG> to enable it" )
+    else ( NOT DEFINED HEX_MEMORY_DEBUG )
+        message( "hexEngine - Memory-Management debugging is enabled" )
+        add_definitions( -DHEX_MEMORY_DEBUG=1 )
+    endif ( NOT DEFINED HEX_MEMORY_DEBUG )
+
     set( NOT DEFINED HEX_BUILD_TYPES TRUE )
 endif ( NOT DEFINED HEX_BUILD_TYPES )
 
