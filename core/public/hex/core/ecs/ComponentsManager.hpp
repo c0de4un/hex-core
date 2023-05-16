@@ -22,6 +22,22 @@
     #include <hex/core/ecs/BaseManager.hpp>
 #endif /// !HEX_ECS_BASE_MANAGER_HPP
 
+// Include hex::memory
+#ifndef HEX_CORE_CFG_MEMORY_HPP
+    #include <hex/core/cfg/hex_memory.hpp>
+#endif /// !HEX_CORE_CFG_MEMORY_HPP
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// FORWARD-DECLARATIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Forward-Declare hex::ecs::Component
+#ifndef HEX_ECS_COMPONENT_DECL
+    #define HEX_ECS_COMPONENT_DECL
+    namespace hex { namespace ecs { struct Component; } }
+    using ecsComponent = hex::ecs::Component;
+#endif /// !HEX_ECS_COMPONENT_DECL
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -97,6 +113,8 @@ namespace hex
 
             static ecs_ObjectID generateComponentID(const ecs_TypeID typeID);
             static void releaseComponentID(const ecs_TypeID typeID, const ecs_ObjectID id) noexcept;
+
+            static void releaseComponent(hexShared<ecsComponent> pComponent);
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

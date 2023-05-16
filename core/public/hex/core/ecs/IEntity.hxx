@@ -38,9 +38,9 @@
 
 // Forward-Declare hex::ecs::Component
 #ifndef HEX_ECS_COMPONENT_DECL
-#define HEX_ECS_COMPONENT_DECL
-namespace hex { namespace ecs { struct Component; } }
-using ecsComponent = hex::ecs::Component;
+    #define HEX_ECS_COMPONENT_DECL
+    namespace hex { namespace ecs { struct Component; } }
+    using ecsComponent = hex::ecs::Component;
 #endif /// !HEX_ECS_COMPONENT_DECL
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,6 +77,13 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             virtual ~IEntity() noexcept = default;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // GETTERS & SETTERS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            virtual ecs_TypeID getTypeID() const noexcept = 0;
+            virtual ecs_ObjectID getID() const noexcept   = 0;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS

@@ -44,6 +44,16 @@
     #include <hex/core/ecs/SystemsManager.hpp>
 #endif /// !HEX_ECS_SYSTEMS_MANAGER_HPP
 
+// Include hex::ecs::EntitiesManager
+#ifndef HEX_ECS_ENTITIES_MANAGER_HPP
+    #include <hex/core/ecs/EntitiesManager.hpp>
+#endif /// !HEX_ECS_ENTITIES_MANAGER_HPP
+
+// Include hex::ecs::Entity
+#ifndef HEX_ECS_ENTITY_HPP
+    #include <hex/core/ecs/Entity.hpp>
+#endif /// !HEX_ECS_ENTITY_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

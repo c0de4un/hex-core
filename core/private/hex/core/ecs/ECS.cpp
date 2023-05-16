@@ -59,6 +59,7 @@ namespace hex
 
             ecsComponents::Initialize();
             ecs_Systems::Initialize();
+            ecs_Entities::Initialize();
         }
 
         void ECS::Terminate() noexcept
@@ -69,6 +70,7 @@ namespace hex
 
             ecsComponents::Terminate();
             ecs_Systems::Terminate();
+            ecs_Entities::Terminate();
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

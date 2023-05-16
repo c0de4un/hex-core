@@ -19,6 +19,11 @@
     #include <hex/core/ecs/ComponentsManager.hpp>
 #endif /// !HEX_ECS_COMPONENTS_MANAGER_HPP
 
+// Include hex::ecs::Component
+#ifndef HEX_ECS_COMPONENT_HPP
+    #include <hex/core/ecs/Component.hpp>
+#endif /// !HEX_ECS_COMPONENT_HPP
+
 #ifdef HEX_LOGGING // LOG
 
     // Include hex::core::debug
@@ -121,6 +126,15 @@ namespace hex
             {
                 // void
             }
+        }
+
+        void ComponentsManager::releaseComponent(hexShared<ecsComponent> pComponent)
+        {
+            hexLock componentLock(pComponent->mMutex); // Possible dead-lock, users must be careful
+
+            pComponent->mDisabled = true; // Let users know, that Component marked for removal and shouldn't be used
+
+            releaseComponentID(pComponent->mTypeID, pComponent->mID);
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

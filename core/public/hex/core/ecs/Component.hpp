@@ -97,6 +97,7 @@ namespace hex
 #endif
 
 using ecsComponent = hex::ecs::Component;
+#define HEX_ECS_COMPONENT_DECL
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
