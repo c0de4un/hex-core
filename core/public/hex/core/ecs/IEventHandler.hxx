@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_ECS_EVENT_HPP
-#define HEX_ECS_EVENT_HPP
+#ifndef HEX_ECS_I_EVENT_HANDLER_HXX
+#define HEX_ECS_I_EVENT_HANDLER_HXX
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -17,18 +17,34 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::ecs::IEvent
-#ifndef HEX_ECS_I_EVENT_HXX
-    #include <hex/core/ecs/IEvent.hxx>
-#endif /// !HEX_ECS_I_EVENT_HXX
+// Include hex::api
+#ifndef HEX_CORE_CFG_API_HPP
+    #include <hex/core/cfg/hex_api.hpp>
+#endif /// !HEX_CORE_CFG_API_HPP
 
-// Include hex::atomic
-#ifndef HEX_CORE_CFG_ATOMIC_HPP
-    #include <hex/core/cfg/hex_atomic.hpp>
-#endif /// !HEX_CORE_CFG_ATOMIC_HPP
+// Include hex::ecs::types
+#ifndef HEX_ECS_TYPES_HPP
+    #include <hex/core/ecs/ecs_types.hpp>
+#endif /// !HEX_ECS_TYPES_HPP
+
+// Include hex::memory
+#ifndef HEX_CORE_CFG_MEMORY_HPP
+    #include <hex/core/cfg/hex_memory.hpp>
+#endif /// !HEX_CORE_CFG_MEMORY_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Event
+// FORWARD-DECLARATIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Forward-Declare hex::ecs::IEvent
+#ifndef HEX_ECS_I_EVENT_DECL
+    #define HEX_ECS_I_EVENT_DECL
+    namespace hex { namespace ecs { class IEvent; } }
+    using ecsIEvent = hex::ecs::IEvent;
+#endif /// !HEX_ECS_I_EVENT_DECL
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// IEventHandler
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
@@ -39,7 +55,7 @@ namespace hex
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        HEX_API class Event
+        HEX_API class IEventHandler
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -48,41 +64,7 @@ namespace hex
             // META
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            HEX_CLASS
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        protected:
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // CONSTANTS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            const ecs_TypeID   mTypeID;
-            const ecs_ObjectID mID;
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // FIELDS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            hex_atomic<bool> mHandled;
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // CONSTRUCTOR
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            explicit Event(const ecs_TypeID typeId);
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // DELETED
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            Event(const Event&)            = delete;
-            Event& operator=(const Event&) = delete;
-            Event(Event&&)                 = delete;
-            Event& operator=(Event&&)      = delete;
+            HEX_INTERFACE
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -94,15 +76,18 @@ namespace hex
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual ~Event() noexcept;
+            virtual ~IEventHandler() noexcept = default;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // OVERRIDE.IEvent
+            // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual ecs_TypeID getTypeID() const noexcept final;
-            virtual ecs_ObjectID getID() const noexcept   final;
-            virtual bool isHandled() const noexcept       final;
+            /*!
+             * @brief Handle event
+             * @param pEvent event to handle
+             * @return "true" to stop iterating other handlers for this event
+            */
+            virtual bool handleEvent(hexShared<ecsIEvent> pEvent) = 0;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -114,6 +99,9 @@ namespace hex
 
 }
 
+using ecsIEventHandler = hex::ecs::IEventHandler;
+#define HEX_ECS_I_EVENT_HANDLER_DECL
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_ECS_EVENT_HPP
+#endif /// !HEX_ECS_I_EVENT_HANDLER_HXX

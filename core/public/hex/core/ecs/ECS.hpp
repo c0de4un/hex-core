@@ -54,6 +54,16 @@
     #include <hex/core/ecs/Entity.hpp>
 #endif /// !HEX_ECS_ENTITY_HPP
 
+// Include hex::ecs::Event
+#ifndef HEX_ECS_EVENT_HPP
+    #include <hex/core/ecs/Event.hpp>
+#endif /// !HEX_ECS_EVENT_HPP
+
+// Include hex::ecs::EventsManager
+#ifndef HEX_ECS_EVENTS_MANAGER_HPP
+    #include <hex/core/ecs/EventsManager.hpp>
+#endif /// !HEX_ECS_EVENTS_MANAGER_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

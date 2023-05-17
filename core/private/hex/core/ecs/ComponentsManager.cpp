@@ -90,7 +90,7 @@ namespace hex
 #endif // LOG
 
 #ifdef HEX_DEBUG // DEBUG
-            assert(mInstance && "ComponentsManager::Initialize: already terminated");
+            assert(mInstance && "ComponentsManager::Terminate: already terminated");
 #endif // DEBUG
 
             delete mInstance;

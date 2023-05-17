@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_ECS_I_EVENT_HXX
-#define HEX_ECS_I_EVENT_HXX
+#ifndef HEX_ECS_EVENT_HANDLERS_COLLECTION_HPP
+#define HEX_ECS_EVENT_HANDLERS_COLLECTION_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -22,13 +22,34 @@
     #include <hex/core/cfg/hex_api.hpp>
 #endif /// !HEX_CORE_CFG_API_HPP
 
-// Include hex::ecs::types
-#ifndef HEX_ECS_TYPES_HPP
-    #include <hex/core/ecs/ecs_types.hpp>
-#endif /// !HEX_ECS_TYPES_HPP
+// Include hex::mutex
+#ifndef HEX_CORE_CFG_MUTEX_HPP
+    #include <hex/core/cfg/hex_mutex.hpp>
+#endif /// !HEX_CORE_CFG_MUTEX_HPP
+
+// Include hex::deque
+#ifndef HEX_CORE_CFG_DEQUE_HPP
+    #include <hex/core/cfg/hex_deque.hpp>
+#endif /// !HEX_CORE_CFG_DEQUE_HPP
+
+// Include hex::memory
+#ifndef HEX_CORE_CFG_MEMORY_HPP
+    #include <hex/core/cfg/hex_memory.hpp>
+#endif /// !HEX_CORE_CFG_MEMORY_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// IEvent
+// FORWARD-DECLARATIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Forward-Declare hex::ecs::IEventHandler
+#ifndef HEX_ECS_I_EVENT_HANDLER_DECL
+    #define HEX_ECS_I_EVENT_HANDLER_DECL
+    namespace hex { namespace ecs { class IEventHandler; } }
+    using ecsIEventHandler = hex::ecs::IEventHandler;
+#endif /// !HEX_ECS_I_EVENT_HANDLER_DECL
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// EventsCollection
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
@@ -39,37 +60,17 @@ namespace hex
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        HEX_API class IEvent
+        HEX_API struct EventHandlersCollection final
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // META
+            // FIELDS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            HEX_INTERFACE
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        public:
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // DESTRUCTOR
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            virtual ~IEvent() noexcept = default;
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // GETTERS & SETTERS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            virtual ecs_TypeID getTypeID() const noexcept        = 0;
-            virtual ecs_ObjectID getID() const noexcept          = 0;
-            virtual bool isHandled() const noexcept              = 0;
-            virtual void setHandled(const bool handled) noexcept = 0;
+            hexMutex                              mMutex;
+            hexDeque<hexShared<ecsIEventHandler>> mHandlers;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -81,9 +82,8 @@ namespace hex
 
 }
 
-using ecsIEvent = hex::ecs::IEvent;
-#define HEX_ECS_I_EVENT_DECL
+#define HEX_ECS_EVENT_HANDLERS_COLLECTION_DECL
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_ECS_I_EVENT_HXX
+#endif /// !HEX_ECS_EVENT_HANDLERS_COLLECTION_HPP

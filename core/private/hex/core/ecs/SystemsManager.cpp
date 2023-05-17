@@ -85,7 +85,7 @@ namespace hex
 #endif // LOG
 
 #ifdef HEX_DEBUG // DEBUG
-            assert(mInstance && "SystemsManager::Initialize: already terminated");
+            assert(mInstance && "SystemsManager::Terminate: already terminated");
 #endif // DEBUG
 
             delete mInstance;

@@ -85,7 +85,7 @@ namespace hex
 #endif // LOG
 
 #ifdef HEX_DEBUG // DEBUG
-            assert(mInstance && "EntitiesManager::Initialize: already terminated");
+            assert(mInstance && "EntitiesManager::Terminate: already terminated");
 #endif // DEBUG
 
             delete mInstance;
