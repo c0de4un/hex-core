@@ -39,14 +39,18 @@ endif ( NOT DEFINED HEX_PLATFORM_DETECTED )
 
 if ( NOT DEFINED CPU_ARCHITECTURE_BIT )
     set( CPU_ARCHITECTURE_BIT "x64" )
-    add_definitions( -DCPU_ARCHITECTURE_BIT=x64 )
     message( STATUS "hexEngine - CPU_ARCHITECTURE_BIT set to ${CPU_ARCHITECTURE_BIT} as default" )
+else ( NOT DEFINED CPU_ARCHITECTURE_BIT )
+    message( STATUS "hexEngine - CPU_ARCHITECTURE_BIT is ${CPU_ARCHITECTURE_BIT}" )
 endif ( NOT DEFINED CPU_ARCHITECTURE_BIT )
+add_definitions( -DCPU_ARCHITECTURE_BIT=${CPU_ARCHITECTURE_BIT} )
 
 if ( NOT DEFINED CPU_ARCHITECTURE )
     set( CPU_ARCHITECTURE "amd" )
-    add_definitions( -DCPU_ARCHITECTURE=amd )
     message( STATUS "hexEngine - CPU_ARCHITECTURE set to ${CPU_ARCHITECTURE} as default" )
+else ( NOT DEFINED CPU_ARCHITECTURE )
+    message( STATUS "hexEngine - CPU_ARCHITECTURE is ${CPU_ARCHITECTURE}" )
 endif ( NOT DEFINED CPU_ARCHITECTURE )
+add_definitions( -DCPU_ARCHITECTURE=${CPU_ARCHITECTURE} )
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
