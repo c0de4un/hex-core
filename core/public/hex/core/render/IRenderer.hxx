@@ -22,6 +22,22 @@
     #include <hex/core/cfg/hex_api.hpp>
 #endif /// !HEX_CORE_CFG_API_HPP
 
+// Include hex::memory
+#ifndef HEX_CORE_CFG_MEMORY_HPP
+    #include <hex/core/cfg/hex_memory.hpp>
+#endif /// !HEX_CORE_CFG_MEMORY_HPP
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// FORWARD-DECLARATIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Forward-Declare hex::core::IRenderListener
+#ifndef HEX_CORE_I_RENDERER_LISTENER_DECL
+    #define HEX_CORE_I_RENDERER_LISTENER_DECL
+    namespace hex { namespace core { class IRendererListener; } }
+    using hex_IRendererListener = hex::core::IRendererListener;
+#endif /// !HEX_CORE_I_RENDERER_LISTENER_DECL
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // IRenderer
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -56,6 +72,13 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             virtual ~IRenderer() noexcept = default;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // METHODS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            virtual void registerListener(hexShared<hex_IRendererListener>&) = 0;
+            virtual void unregisterListener(hex_IRendererListener* const)    = 0;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

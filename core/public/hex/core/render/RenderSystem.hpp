@@ -37,6 +37,11 @@
     #include <hex/core/cfg/hex_mutex.hpp>
 #endif /// !HEX_CORE_CFG_MUTEX_HPP
 
+// Include hex::vector
+#ifndef HEX_CORE_CFG_VECTOR_HPP
+    #include <hex/core/cfg/hex_vector.hpp>
+#endif /// !HEX_CORE_CFG_VECTOR_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // RenderSystem
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -66,12 +71,17 @@ namespace hex
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            using listener_ptr_t = hexShared<hex_IRendererListener>;
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // FIELDS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             static hexMutex                mInstanceMutex;
             static hexShared<RenderSystem> mInstance;
+
+            hexMutex                  mListenersMutex;
+            hexVector<listener_ptr_t> mListeners;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // CONSTRUCTOR
@@ -111,6 +121,13 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             static void Terminate() noexcept;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // OVERRIDE: IRenderer
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            virtual void registerListener(listener_ptr_t&) final;
+            virtual void unregisterListener(hex_IRendererListener* const)    final;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
