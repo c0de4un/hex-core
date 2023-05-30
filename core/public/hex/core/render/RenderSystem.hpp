@@ -90,6 +90,12 @@ namespace hex
             explicit RenderSystem();
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // METHODS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            listener_ptr_t getNextListener(const size_t index);
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // DELETED
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -22,6 +22,9 @@
     #include <hex/core/cfg/hex_api.hpp>
 #endif /// !HEX_CORE_CFG_API_HPP
 
+// Include STL
+#include <exception>
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // IRendererListener
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,7 +68,11 @@ namespace hex
              * @brief Called when Renderer Surface is ready and GPU-related assets can be loaded
              * @return "true" if OK, "false" to stop further calls and stop
             */
-            virtual bool onRendererReady() = 0;
+            virtual bool onRenderReady() = 0;
+
+            virtual void onRender() = 0;
+
+            virtual void onRenderError(const std::exception err) = 0;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

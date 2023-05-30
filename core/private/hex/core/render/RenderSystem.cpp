@@ -78,7 +78,7 @@ namespace hex
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // METHODS
+        // PUBLIC METHODS
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         void RenderSystem::Terminate() noexcept
@@ -91,6 +91,21 @@ namespace hex
             mInstanceMutex.try_lock();
 
             mInstance = nullptr;
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // PROTECTED METHODS
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        RenderSystem::listener_ptr_t RenderSystem::getNextListener(const size_t index)
+        {
+            hexLock lock(mListenersMutex);
+
+            const size_t listenersCount(mListeners.size());
+            if (!listenersCount || index >= listenersCount)
+                return listener_ptr_t(nullptr);
+
+            return mListeners[index];
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
