@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_CORE_I_RENDERER_HXX
-#define HEX_CORE_I_RENDERER_HXX
+#ifndef HEX_CORE_I_RENDERER_LISTENER_HXX
+#define HEX_CORE_I_RENDERER_LISTENER_HXX
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -22,24 +22,11 @@
     #include <hex/core/cfg/hex_api.hpp>
 #endif /// !HEX_CORE_CFG_API_HPP
 
-// Include hex::memory
-#ifndef HEX_CORE_CFG_MEMORY_HPP
-    #include <hex/core/cfg/hex_memory.hpp>
-#endif /// !HEX_CORE_CFG_MEMORY_HPP
+// Include STL
+#include <exception>
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// FORWARD-DECLARATIONS
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-// Forward-Declare hex::core::IRenderListener
-#ifndef HEX_CORE_I_RENDERER_LISTENER_DECL
-    #define HEX_CORE_I_RENDERER_LISTENER_DECL
-    namespace hex { namespace core { class IRendererListener; } }
-    using hex_IRendererListener = hex::core::IRendererListener;
-#endif /// !HEX_CORE_I_RENDERER_LISTENER_DECL
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// IRenderer
+// IRendererListener
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
@@ -50,7 +37,7 @@ namespace hex
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        HEX_API class IRenderer
+        HEX_API class IRendererListener
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -71,14 +58,21 @@ namespace hex
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual ~IRenderer() noexcept = default;
+            virtual ~IRendererListener() noexcept = default;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual void registerListener(hexShared<hex_IRendererListener>&) = 0;
-            virtual void unregisterListener(hex_IRendererListener* const)    = 0;
+            /*!
+             * @brief Called when Renderer Surface is ready and GPU-related assets can be loaded
+             * @return "true" if OK, "false" to stop further calls and stop
+            */
+            virtual bool onRenderReady() = 0;
+
+            virtual void onRender() = 0;
+
+            virtual void onRenderError(const std::exception err) = 0;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -90,8 +84,8 @@ namespace hex
 
 }
 
-using hexIRenderer = hex::core::IRenderer;
+#define HEX_CORE_I_RENDERER_LISTENER_DECL
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_CORE_I_RENDERER_HXX
+#endif /// !HEX_CORE_I_RENDERER_LISTENER_HXX

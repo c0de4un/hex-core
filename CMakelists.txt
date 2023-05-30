@@ -96,6 +96,7 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}graphics/GraphicsSettings.hpp"
     # RENDER
     "${HEX_CORE_PUBLIC}render/IRenderer.hxx"
+    "${HEX_CORE_PUBLIC}render/IRendererListener.hxx"
     "${HEX_CORE_PUBLIC}render/RenderSystem.hpp"
     # PCH
     "${HEX_CORE_PUBLIC}hex_core.hpp"
