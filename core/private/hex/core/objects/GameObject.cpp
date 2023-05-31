@@ -53,7 +53,8 @@ namespace hex
             Entity(typeId),
             mName(pName),
             mChildrenMutex(hasChildren ? new hexMutex() : nullptr),
-            mChildren(hasChildren ? new hexVector<object_ptr_t>() : nullptr)
+            mChildren(hasChildren ? new hexVector<object_ptr_t>() : nullptr),
+            mParent(nullptr)
         {
         }
 
@@ -82,36 +83,96 @@ namespace hex
         // METHODS
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        bool GameObject::onAttach(GameObject* const)
+        bool GameObject::onAttach(GameObject* const parent)
         {
-            // @TODO: GameObject::onAttach()
-            return false;
+#ifdef HEX_DEBUG // DEBUG
+            assert(parent && "GameObject::onAttach: parent is null");
+            assert(mParent.isEmpty() && "GameObject::onAttach: already attached");
+#endif // DEBUG
+
+            if (!mParent.isEmpty())
+                return false;
+
+            mParent = parent;
+
+            return true;
         }
 
-        void GameObject::onDetach(GameObject* const)
+        void GameObject::onDetach(GameObject* const parent)
         {
-            // @TODO: GameObject::onDetach()
+#ifdef HEX_DEBUG // DEBUG
+            assert(parent && "GameObject::onDetach: parent is null");
+#endif // DEBUG
+
+            if (mParent.get() != parent)
+                return;
+
+            mParent = nullptr;
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // METHODS
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        bool GameObject::attachObject(GameObject* const)
+        bool GameObject::attachObject(GameObject* const pChild)
         {
+#ifdef HEX_DEBUG // DEBUG
+            assert(pChild && "GameObject::attachObject: pChild is null");
+            assert(pChild->mParent.isEmpty() && "GameObject::attachObject: pChild already attached");
+#endif // DEBUG
+
             if (!mChildren)
                 return false;
 
-            // @TODO: GameObject::attachObject()
-            return false;
+            if (!pChild->onAttach(this))
+                return false;
+
+            auto& children(*mChildren);
+
+            hexLock lock(*mChildrenMutex);
+            for (auto child_ptr : children)
+            {
+                if (!child_ptr.get())
+                {
+                    child_ptr.reset(pChild);
+                    return true;
+                }
+            }
+
+            children.push_back(GameObject::object_ptr_t(pChild));
+
+            return true;
         }
 
-        void GameObject::detachObject(GameObject* const)
+        bool GameObject::detachObject(GameObject* const pChild)
         {
-            if (!mChildren)
-                return;
+#ifdef HEX_DEBUG // DEBUG
+            assert(pChild && "GameObject::detachObject: pChild is null");
+            assert(pChild->mParent.get() == this && "GameObject::detachObject: pChild is attached to other parent");
+            assert(mChildren && "GameObject::detachObject: this object don't have children");
+            assert(!pChild->mParent.isEmpty() && "GameObject::detachObject: child is already detached");
+#endif // DEBUG
 
-            // @TODO: GameObject::detachObject()
+            if (!mChildren)
+                return false;
+
+            if (pChild->mParent.get() != this)
+                return false;
+
+            auto& children(*mChildren);
+
+            hexLock lock(*mChildrenMutex);
+            for (auto child_ptr : children)
+            {
+                if (child_ptr.get() == pChild)
+                {
+                    pChild->onDetach(this);
+                    child_ptr.reset(nullptr);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

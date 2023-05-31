@@ -27,6 +27,11 @@
     #include <hex/core/cfg/hex_string.hpp>
 #endif /// !HEX_CORE_CFG_STRING_HPP
 
+// Include hex::core::WeakPointer
+#ifndef HEX_CORE_WEAK_POINTER_HPP
+    #include <hex/core/memory/WeakPointer.hpp>
+#endif /// !HEX_CORE_WEAK_POINTER_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // GameObject
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -93,6 +98,7 @@ namespace hex
 
             hexMutex * const               mChildrenMutex;
             hexVector<object_ptr_t>* const mChildren;
+            hexWeak<GameObject>            mParent;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // CONSTRUCTOR
@@ -134,7 +140,7 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             bool attachObject(GameObject* const);
-            void detachObject(GameObject* const);
+            bool detachObject(GameObject* const);
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
