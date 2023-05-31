@@ -53,6 +53,7 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}cfg/hex_api.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_atomic.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_deque.hpp"
+    "${HEX_CORE_PUBLIC}cfg/hex_glm.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_map.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_math.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_memory.hpp"

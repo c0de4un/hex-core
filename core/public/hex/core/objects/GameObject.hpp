@@ -32,6 +32,11 @@
     #include <hex/core/memory/WeakPointer.hpp>
 #endif /// !HEX_CORE_WEAK_POINTER_HPP
 
+// Include hex::glm
+#ifndef HEX_CORE_CFG_GLM_HPP
+    #include <hex/core/cfg/hex_glm.hpp>
+#endif /// !HEX_CORE_CFG_GLM_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // GameObject
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
