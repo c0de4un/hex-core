@@ -59,6 +59,7 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}cfg/hex_mutex.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_numeric.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_platform.hpp"
+    "${HEX_CORE_PUBLIC}cfg/hex_string.hpp"
     "${HEX_CORE_PUBLIC}cfg/hex_vector.hpp"
     # ASYNC
     "${HEX_CORE_PUBLIC}async/SpinLock.hpp"
@@ -98,6 +99,8 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}render/IRenderer.hxx"
     "${HEX_CORE_PUBLIC}render/IRendererListener.hxx"
     "${HEX_CORE_PUBLIC}render/RenderSystem.hpp"
+    # OBJECTS
+    "${HEX_CORE_PUBLIC}objects/GameObject.hpp"
     # PCH
     "${HEX_CORE_PUBLIC}hex_core.hpp"
 )
@@ -145,6 +148,8 @@ set( HEX_CORE_SOURCES
     "${HEX_CORE_PRIVATE}graphics/GraphicsSystem.cpp"
     # RENDER
     "${HEX_CORE_PRIVATE}render/RenderSystem.cpp"
+    # OBJECTS
+    "${HEX_CORE_PRIVATE}objects/GameObject.cpp"
 )
 
 # DEBUG

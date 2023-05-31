@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_ECS_ENTITY_HPP
-#define HEX_ECS_ENTITY_HPP
+#ifndef HEX_CORE_GAME_OBJECT_HPP
+#define HEX_CORE_GAME_OBJECT_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -17,34 +17,27 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::ecs::IEntity
-#ifndef HEX_ECS_I_ENTITY_HXX
-    #include <hex/core/ecs/IEntity.hxx>
-#endif /// !HEX_ECS_I_ENTITY_HXX
+// Include hex::ecs::Entity
+#ifndef HEX_ECS_ENTITY_HPP
+    #include <hex/core/ecs/Entity.hpp>
+#endif /// !HEX_ECS_ENTITY_HPP
 
-// Include hex::vector
-#ifndef HEX_CORE_CFG_VECTOR_HPP
-    #include <hex/core/cfg/hex_vector.hpp>
-#endif /// !HEX_CORE_CFG_VECTOR_HPP
-
-// Include hex::mutex
-#ifndef HEX_CORE_CFG_MUTEX_HPP
-    #include <hex/core/cfg/hex_mutex.hpp>
-#endif /// !HEX_CORE_CFG_MUTEX_HPP
+// Include hex::string
+#ifndef HEX_CORE_CFG_STRING_HPP
+    #include <hex/core/cfg/hex_string.hpp>
+#endif /// !HEX_CORE_CFG_STRING_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Entity
+// GameObject
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
 {
 
-    namespace ecs
+    namespace core
     {
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        HEX_API class Entity : public IEntity
+        HEX_API class GameObject : public ecsEntity
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -57,15 +50,36 @@ namespace hex
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+        public:
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // ALIASES
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            using object_ptr_t = hexShared<GameObject>;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // CONSTANTS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            const hexString* const mName;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
         private:
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // METHODS
+            // DELETED
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            inline void releaseComponents();
+            GameObject(const GameObject&)            = delete;
+            GameObject& operator=(const GameObject&) = delete;
+            GameObject(GameObject&&)                 = delete;
+            GameObject& operator=(GameObject&&)      = delete;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -77,23 +91,25 @@ namespace hex
             // FIELDS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            mutable hexMutex                   mComponentsMutex;
-            hexVector<hexShared<ecsComponent>> mComponents;
+            hexMutex * const               mChildrenMutex;
+            hexVector<object_ptr_t>* const mChildren;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // CONSTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            explicit Entity(const ecs_TypeID typeId);
+            explicit GameObject(
+                const ecs_TypeID typeId,
+                const bool hasChildren,
+                const hexString* const pName = nullptr
+            );
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // DELETED
+            // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            Entity(const Entity&)            = delete;
-            Entity& operator=(const Entity&) = delete;
-            Entity(Entity&&)                 = delete;
-            Entity& operator=(Entity&&)      = delete;
+            virtual bool onAttach(GameObject* const);
+            virtual void onDetach(GameObject* const);
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -102,40 +118,34 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // CONSTANTS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            const ecs_TypeID   mTypeID;
-            const ecs_ObjectID mID;
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual ~Entity() noexcept;
+            virtual ~GameObject() noexcept;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // OVERRIDE.IEntity
+            // GETTERS & SETTERS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual ecs_TypeID getTypeID() const noexcept final;
-            virtual ecs_ObjectID getID() const noexcept   final;
+            hexString getName() const noexcept;
 
-            virtual void addComponent(hexShared<ecsComponent> pComponent)                final;
-            virtual void removeComponent(const ecs_TypeID typeId, const ecs_ObjectID id) final;
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // METHODS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            bool attachObject(GameObject* const);
+            void detachObject(GameObject* const);
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         };
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     }
 
 }
 
-using ecsEntity = hex::ecs::Entity;
+using hexGameObject = hex::core::GameObject;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_ECS_ENTITY_HPP
+#endif /// !HEX_CORE_GAME_OBJECT_HPP
