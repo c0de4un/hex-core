@@ -70,6 +70,7 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}memory/IReferenceUser.hxx"
     "${HEX_CORE_PUBLIC}memory/MemoryManager.hpp"
     "${HEX_CORE_PUBLIC}memory/SharedPointer.hpp"
+    "${HEX_CORE_PUBLIC}memory/WeakPointer.hpp"
     # ECS
     "${HEX_CORE_PUBLIC}ecs/BaseManager.hpp"
     "${HEX_CORE_PUBLIC}ecs/Component.hpp"
