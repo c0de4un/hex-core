@@ -66,6 +66,13 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}async/SpinLock.hpp"
     # COLLECTIONS
     "${HEX_CORE_PUBLIC}collections/IDStorage.hpp"
+    # COMPONENTS
+    "${HEX_CORE_PUBLIC}components/ColorComponent.hpp"
+    "${HEX_CORE_PUBLIC}components/ECoreComponents.hpp"
+    "${HEX_CORE_PUBLIC}components/PositionComponent.hpp"
+    "${HEX_CORE_PUBLIC}components/RotationComponent.hpp"
+    "${HEX_CORE_PUBLIC}components/ScaleComponent.hpp"
+    "${HEX_CORE_PUBLIC}components/SingleValueComponent.hpp"
     # MEMORY
     "${HEX_CORE_PUBLIC}memory/ReferenceBlock.hpp"
     "${HEX_CORE_PUBLIC}memory/IReferenceUser.hxx"
