@@ -19,6 +19,31 @@
     #include <hex/core/objects/GameObject.hpp>
 #endif /// !HEX_CORE_GAME_OBJECT_HPP
 
+// Include hex::core::PositionComponent
+#ifndef HEX_CORE_POSITION_COMPONENT_HPP
+    #include <hex/core/components/PositionComponent.hpp>
+#endif /// !HEX_CORE_POSITION_COMPONENT_HPP
+
+// Include hex::core::RotationComponent
+#ifndef HEX_CORE_ROTATION_COMPONENT_HPP
+    #include <hex/core/components/RotationComponent.hpp>
+#endif /// !HEX_CORE_ROTATION_COMPONENT_HPP
+
+// Include hex::core::ScaleComponent
+#ifndef HEX_CORE_SCALE_COMPONENT_HPP
+    #include <hex/core/components/ScaleComponent.hpp>
+#endif /// !HEX_CORE_SCALE_COMPONENT_HPP
+
+// Include hex::core::ColorComponent
+#ifndef HEX_CORE_COLOR_COMPONENT_HPP
+    #include <hex/core/components/ColorComponent.hpp>
+#endif /// !HEX_CORE_COLOR_COMPONENT_HPP
+
+// Include hex::core::ECoreComponents
+#ifndef HEX_CORE_COMPONENTS_HPP
+    #include <hex/core/components/ECoreComponents.hpp>
+#endif /// !HEX_CORE_COMPONENTS_HPP
+
 #ifdef HEX_LOGGING
 
     // Include hex::debug
@@ -79,6 +104,60 @@ namespace hex
             return mName ? *mName : "";
         }
 
+        glm::vec3 GameObject::getPosition()
+        {
+            auto _position(getComponent(
+                static_cast<ecs_TypeID>(hexECoreComponents::POSITION)
+            ));
+
+            hexPositionComponent* const positionComponent(
+                static_cast<hexPositionComponent*>(_position.get())
+            );
+
+            return positionComponent ? positionComponent->mValue : glm::vec3(0.0f, 0.0f, 0.0f);
+        }
+
+        glm::vec3 GameObject::getRotation()
+        {
+            auto _rotation(getComponent(
+                static_cast<ecs_TypeID>(hexECoreComponents::ROTATION)
+            ));
+
+            hexRotationComponent* const rotationComponent(
+                static_cast<hexRotationComponent*>(_rotation.get())
+            );
+
+            return rotationComponent ? rotationComponent->mValue : glm::vec3(0.0f, 0.0f, 0.0f);
+        }
+
+        glm::vec3 GameObject::getScale()
+        {
+            auto _scale(getComponent(
+                static_cast<ecs_TypeID>(hexECoreComponents::SCALE)
+            ));
+
+            hexScaleComponent* const scaleComponent(
+                static_cast<hexScaleComponent*>(_scale.get())
+            );
+
+            return scaleComponent ? scaleComponent->mValue : glm::vec3(0.0f, 0.0f, 0.0f);
+        }
+
+        void GameObject::setPosition(const glm::vec3 pos, const bool affectChildren)
+        {
+            // @TODO: GameObject::setPosition()
+        }
+
+        void GameObject::setRotation(const glm::vec3 rot, const bool affectChildren)
+        {
+            // @TODO: GameObject::setRotation()
+        }
+
+        void GameObject::setScale(const glm::vec3 scale, const bool affectChildren)
+        {
+            // @TODO: GameObject::setScale()
+        }
+
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // METHODS
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -108,6 +187,21 @@ namespace hex
                 return;
 
             mParent = nullptr;
+        }
+
+        void GameObject::Move(const glm::vec3 offset, const bool affectChildren)
+        {
+            // @TODO: GameObject::Move()
+        }
+
+        void GameObject::Rotate(const glm::vec3 offset, const bool affectChildren)
+        {
+            // @TODO: GameObject::Rotate()
+        }
+
+        void GameObject::Scale(const glm::vec3 scale, const bool affectChildren)
+        {
+            // @TODO: GameObject::Scale()
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -140,12 +140,24 @@ namespace hex
 
             hexString getName() const noexcept;
 
+            glm::vec3 getPosition();
+            glm::vec3 getRotation();
+            glm::vec3 getScale();
+
+            void setPosition(const glm::vec3 pos, const bool affectChildren);
+            void setRotation(const glm::vec3 rot, const bool affectChildren);
+            void setScale(const glm::vec3 scale, const bool affectChildren);
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             bool attachObject(GameObject* const);
             bool detachObject(GameObject* const);
+
+            void Move(const glm::vec3 offset, const bool affectChildren);
+            void Rotate(const glm::vec3 offset, const bool affectChildren);
+            void Scale(const glm::vec3 scale, const bool affectChildren);
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

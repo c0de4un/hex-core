@@ -59,6 +59,8 @@ namespace hex
 
 }
 
+using hexECoreComponents = hex::core::ECoreComponents;
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 #endif /// !HEX_CORE_COMPONENTS_HPP
