@@ -76,12 +76,15 @@ namespace hex
 
         void Entity::releaseComponents()
         {
-            const size_t  componentsCount(mComponents.size());
-            for (size_t i = 0; i < componentsCount; i++)
-            {
-                hexShared<ecsComponent>& component(mComponents.at(i));
+            hexLock lock(mComponentsMutex, true);
+            lock.try_lock();
 
-                ComponentsManager::releaseComponent(component);
+            const auto end_iter(mComponents.cend());
+            auto iter(mComponents.begin());
+            while (iter != end_iter)
+            {
+                ComponentsManager::releaseComponent(iter->second);
+                iter++;
             }
         }
 
@@ -99,42 +102,25 @@ namespace hex
             return mID;
         }
 
+        hexShared<ecsComponent> Entity::getComponent(const ecs_TypeID typeId)
+        {
+            hexLock lock(mComponentsMutex);
+
+            return mComponents[typeId];
+        }
+
         void Entity::addComponent(hexShared<ecsComponent> pComponent)
         {
             hexLock lock(mComponentsMutex);
 
-            const size_t  componentsCount(mComponents.size());
-            for (size_t i = 0; i < componentsCount; i++)
-            {
-                hexShared<ecsComponent>& component(mComponents.at(i));
-                if (!component.get())
-                {
-                    component.reset(pComponent.get()); // Copy
-                    return;
-                }
-            }
-
-            mComponents.push_back(pComponent); // Copy
+            mComponents[pComponent->mTypeID] = pComponent;
         }
 
         void Entity::removeComponent(const ecs_TypeID typeId, const ecs_ObjectID id)
         {
             hexLock lock(mComponentsMutex);
 
-            ecsComponent* component_rawPtr(nullptr);
-            const size_t  componentsCount(mComponents.size());
-            for (size_t i = 0; i < componentsCount; i++)
-            {
-                hexShared<ecsComponent>& component(mComponents.at(i));
-                component_rawPtr = component.get();
-                if (component_rawPtr
-                    && component_rawPtr->mTypeID == typeId
-                    && component_rawPtr->mID == id)
-                {
-                    component.reset();
-                    break;
-                }
-            }
+            mComponents[typeId] = nullptr;
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

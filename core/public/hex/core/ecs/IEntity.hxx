@@ -85,12 +85,14 @@ namespace hex
             virtual ecs_TypeID getTypeID() const noexcept = 0;
             virtual ecs_ObjectID getID() const noexcept   = 0;
 
+            virtual hexShared<ecsComponent> getComponent(const ecs_TypeID) = 0;
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual void addComponent(hexShared<ecsComponent> pComponent)                = 0;
-            virtual void removeComponent(const ecs_TypeID typeID, const ecs_ObjectID id) = 0;
+            virtual void addComponent(hexShared<ecsComponent>)                 = 0;
+            virtual void removeComponent(const ecs_TypeID, const ecs_ObjectID) = 0;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

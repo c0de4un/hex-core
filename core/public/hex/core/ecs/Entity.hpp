@@ -32,6 +32,11 @@
     #include <hex/core/cfg/hex_mutex.hpp>
 #endif /// !HEX_CORE_CFG_MUTEX_HPP
 
+// Include hex::map
+#ifndef HEX_CORE_CFG_MAP_HPP
+    #include <hex/core/cfg/hex_map.hpp>
+#endif /// !HEX_CORE_CFG_MAP_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Entity
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,12 +78,14 @@ namespace hex
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            using comp_ptr_t = hexShared<ecsComponent>;
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // FIELDS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            mutable hexMutex                   mComponentsMutex;
-            hexVector<hexShared<ecsComponent>> mComponents;
+            mutable hexMutex               mComponentsMutex;
+            hexMap<ecs_TypeID, comp_ptr_t> mComponents;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // CONSTRUCTOR
@@ -120,6 +127,8 @@ namespace hex
 
             virtual ecs_TypeID getTypeID() const noexcept final;
             virtual ecs_ObjectID getID() const noexcept   final;
+
+            virtual hexShared<ecsComponent> getComponent(const ecs_TypeID) final;
 
             virtual void addComponent(hexShared<ecsComponent> pComponent)                final;
             virtual void removeComponent(const ecs_TypeID typeId, const ecs_ObjectID id) final;

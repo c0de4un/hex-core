@@ -217,6 +217,11 @@ namespace hex
                 return equal(pAddress);
             }
 
+            SharedPointer<T> operator=(const SharedPointer<T>& other)
+            {
+                return SharedPointer<T>(other);
+            }
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         };
