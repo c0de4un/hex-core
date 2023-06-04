@@ -84,6 +84,8 @@ namespace hex
 
 }
 
+using hexIRendererListener = hex::core::IRendererListener;
+
 #define HEX_CORE_I_RENDERER_LISTENER_DECL
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

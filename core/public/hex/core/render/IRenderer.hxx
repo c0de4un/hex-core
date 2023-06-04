@@ -35,7 +35,7 @@
 #ifndef HEX_CORE_I_RENDERER_LISTENER_DECL
     #define HEX_CORE_I_RENDERER_LISTENER_DECL
     namespace hex { namespace core { class IRendererListener; } }
-    using hex_IRendererListener = hex::core::IRendererListener;
+    using hexIRendererListener = hex::core::IRendererListener;
 #endif /// !HEX_CORE_I_RENDERER_LISTENER_DECL
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,8 +77,8 @@ namespace hex
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual void registerListener(hexShared<hex_IRendererListener>&) = 0;
-            virtual void unregisterListener(hex_IRendererListener* const)    = 0;
+            virtual void registerListener(hexShared<hexIRendererListener>&) = 0;
+            virtual void unregisterListener(hexIRendererListener* const)    = 0;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -71,7 +71,7 @@ namespace hex
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            using listener_ptr_t = hexShared<hex_IRendererListener>;
+            using listener_ptr_t = hexShared<hexIRendererListener>;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // FIELDS
@@ -133,7 +133,7 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             virtual void registerListener(listener_ptr_t&) final;
-            virtual void unregisterListener(hex_IRendererListener* const)    final;
+            virtual void unregisterListener(hexIRendererListener* const)    final;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

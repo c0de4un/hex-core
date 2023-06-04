@@ -132,7 +132,7 @@ namespace hex
             mListeners.push_back(pListener);
         }
 
-        void RenderSystem::unregisterListener(hex_IRendererListener* const pListener)
+        void RenderSystem::unregisterListener(hexIRendererListener* const pListener)
         {
 #ifdef HEX_DEBUG // DEBUG
             assert(pListener && "RenderSystem::unregisterListener: null given");
