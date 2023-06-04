@@ -145,7 +145,35 @@ namespace hex
 
         void GameObject::setPosition(const glm::vec3 pos, const bool affectChildren)
         {
-            // @TODO: GameObject::setPosition()
+            auto _position(getComponent(
+                static_cast<ecs_TypeID>(hexECoreComponents::POSITION)
+            ));
+
+            hexPositionComponent* const positionComponent(
+                static_cast<hexPositionComponent*>(_position.get())
+            );
+
+            if (!positionComponent)
+                return;
+
+            hexLock componentLock(positionComponent->mMutex);
+            const glm::vec3 _offset(pos - positionComponent->mValue);
+            positionComponent->mValue = pos;
+            componentLock.unlock();
+
+            if (!affectChildren)
+                return;
+
+            const auto               _childrenCount(countChildren());
+            GameObject::object_ptr_t child_ptr(nullptr);
+            for (size_t childIndex = 0; childIndex < _childrenCount; childIndex++)
+            {
+                child_ptr = getNextChild(childIndex);
+                if (!child_ptr.get())
+                    continue;
+
+                child_ptr->Move(_offset, true);
+            }
         }
 
         void GameObject::setRotation(const glm::vec3 rot, const bool affectChildren)
@@ -156,6 +184,36 @@ namespace hex
         void GameObject::setScale(const glm::vec3 scale, const bool affectChildren)
         {
             // @TODO: GameObject::setScale()
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // GameObject.PROTECTED: GETTERS & SETTERS
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        hexShared<GameObject> GameObject::getNextChild(const size_t index)
+        {
+            if (!mChildren)
+                return hexShared<GameObject>(nullptr);
+
+            hexLock lock(*mChildrenMutex);
+
+            if (mChildren->empty())
+                return hexShared<GameObject>(nullptr);
+
+            if (index >= mChildren->size())
+                return hexShared<GameObject>(nullptr);
+
+            return (*mChildren)[index];
+        }
+
+        size_t GameObject::countChildren()
+        {
+            if (!mChildren)
+                return 0;
+
+            hexLock lock(*mChildrenMutex);
+
+            return mChildren->size();
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
