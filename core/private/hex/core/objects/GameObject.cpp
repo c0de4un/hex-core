@@ -145,12 +145,12 @@ namespace hex
 
         void GameObject::setPosition(const glm::vec3 pos, const bool affectChildren)
         {
-            auto _position(getComponent(
+            auto _component(getComponent(
                 static_cast<ecs_TypeID>(hexECoreComponents::POSITION)
             ));
 
             hexPositionComponent* const positionComponent(
-                static_cast<hexPositionComponent*>(_position.get())
+                static_cast<hexPositionComponent*>(_component.get())
             );
 
             if (!positionComponent)
@@ -178,7 +178,35 @@ namespace hex
 
         void GameObject::setRotation(const glm::vec3 rot, const bool affectChildren)
         {
-            // @TODO: GameObject::setRotation()
+            auto _component(getComponent(
+                static_cast<ecs_TypeID>(hexECoreComponents::ROTATION)
+            ));
+
+            hexPositionComponent* const rotationComponent(
+                static_cast<hexRotationComponent*>(_component.get())
+            );
+
+            if (!rotationComponent)
+                return;
+
+            hexLock componentLock(rotationComponent->mMutex);
+            const glm::vec3 _offset(rot - rotationComponent->mValue);
+            rotationComponent->mValue = rot;
+            componentLock.unlock();
+
+            if (!affectChildren)
+                return;
+
+            const auto               _childrenCount(countChildren());
+            GameObject::object_ptr_t child_ptr(nullptr);
+            for (size_t childIndex = 0; childIndex < _childrenCount; childIndex++)
+            {
+                child_ptr = getNextChild(childIndex);
+                if (!child_ptr.get())
+                    continue;
+
+                child_ptr->Rotate(_offset, true);
+            }
         }
 
         void GameObject::setScale(const glm::vec3 scale, const bool affectChildren)
