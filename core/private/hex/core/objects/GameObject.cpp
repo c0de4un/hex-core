@@ -182,7 +182,7 @@ namespace hex
                 static_cast<ecs_TypeID>(hexECoreComponents::ROTATION)
             ));
 
-            hexPositionComponent* const rotationComponent(
+            hexRotationComponent* const rotationComponent(
                 static_cast<hexRotationComponent*>(_component.get())
             );
 
@@ -215,7 +215,7 @@ namespace hex
                 static_cast<ecs_TypeID>(hexECoreComponents::SCALE)
             ));
 
-            hexPositionComponent* const scaleComponent(
+            hexScaleComponent* const scaleComponent(
                 static_cast<hexScaleComponent*>(_component.get())
             );
 
@@ -305,7 +305,34 @@ namespace hex
 
         void GameObject::Move(const glm::vec3 offset, const bool affectChildren)
         {
-            // @TODO: GameObject::Move()
+            auto _component(getComponent(
+                static_cast<ecs_TypeID>(hexECoreComponents::POSITION)
+            ));
+
+            hexPositionComponent* const positionComponent(
+                static_cast<hexPositionComponent*>(_component.get())
+            );
+
+            if (!positionComponent)
+                return;
+
+            hexLock componentLock(positionComponent->mMutex);
+            positionComponent->mValue += offset;
+            componentLock.unlock();
+
+            if (!affectChildren)
+                return;
+
+            const auto               _childrenCount(countChildren());
+            GameObject::object_ptr_t child_ptr(nullptr);
+            for (size_t childIndex = 0; childIndex < _childrenCount; childIndex++)
+            {
+                child_ptr = getNextChild(childIndex);
+                if (!child_ptr.get())
+                    continue;
+
+                child_ptr->Move(offset, true);
+            }
         }
 
         void GameObject::Rotate(const glm::vec3 offset, const bool affectChildren)
