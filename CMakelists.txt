@@ -110,6 +110,9 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}render/RenderSystem.hpp"
     # OBJECTS
     "${HEX_CORE_PUBLIC}objects/GameObject.hpp"
+    # ASSETS
+    "${HEX_CORE_PUBLIC}assets/IAsset.hxx"
+    "${HEX_CORE_PUBLIC}assets/AssetsSystem.hpp"
     # PCH
     "${HEX_CORE_PUBLIC}hex_core.hpp"
 )
@@ -159,6 +162,8 @@ set( HEX_CORE_SOURCES
     "${HEX_CORE_PRIVATE}render/RenderSystem.cpp"
     # OBJECTS
     "${HEX_CORE_PRIVATE}objects/GameObject.cpp"
+    # ASSETS
+    "${HEX_CORE_PRIVATE}assets/AssetsSystem.cpp"
 )
 
 # DEBUG
