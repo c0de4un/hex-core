@@ -337,7 +337,34 @@ namespace hex
 
         void GameObject::Rotate(const glm::vec3 offset, const bool affectChildren)
         {
-            // @TODO: GameObject::Rotate()
+            auto _component(getComponent(
+                static_cast<ecs_TypeID>(hexECoreComponents::ROTATION)
+            ));
+
+            hexRotationComponent* const rotationComponent(
+                static_cast<hexRotationComponent*>(_component.get())
+            );
+
+            if (!rotationComponent)
+                return;
+
+            hexLock componentLock(rotationComponent->mMutex);
+            rotationComponent->mValue += offset;
+            componentLock.unlock();
+
+            if (!affectChildren)
+                return;
+
+            const auto               _childrenCount(countChildren());
+            GameObject::object_ptr_t child_ptr(nullptr);
+            for (size_t childIndex = 0; childIndex < _childrenCount; childIndex++)
+            {
+                child_ptr = getNextChild(childIndex);
+                if (!child_ptr.get())
+                    continue;
+
+                child_ptr->Rotate(offset, true);
+            }
         }
 
         void GameObject::Scale(const glm::vec3 scale, const bool affectChildren)
