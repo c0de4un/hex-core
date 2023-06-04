@@ -211,7 +211,35 @@ namespace hex
 
         void GameObject::setScale(const glm::vec3 scale, const bool affectChildren)
         {
-            // @TODO: GameObject::setScale()
+            auto _component(getComponent(
+                static_cast<ecs_TypeID>(hexECoreComponents::SCALE)
+            ));
+
+            hexPositionComponent* const scaleComponent(
+                static_cast<hexScaleComponent*>(_component.get())
+            );
+
+            if (!scaleComponent)
+                return;
+
+            hexLock componentLock(scaleComponent->mMutex);
+            const glm::vec3 _offset(scale - scaleComponent->mValue);
+            scaleComponent->mValue = scale;
+            componentLock.unlock();
+
+            if (!affectChildren)
+                return;
+
+            const auto               _childrenCount(countChildren());
+            GameObject::object_ptr_t child_ptr(nullptr);
+            for (size_t childIndex = 0; childIndex < _childrenCount; childIndex++)
+            {
+                child_ptr = getNextChild(childIndex);
+                if (!child_ptr.get())
+                    continue;
+
+                child_ptr->Scale(_offset, true);
+            }
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
