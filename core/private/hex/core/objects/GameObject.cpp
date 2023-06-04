@@ -369,7 +369,34 @@ namespace hex
 
         void GameObject::Scale(const glm::vec3 scale, const bool affectChildren)
         {
-            // @TODO: GameObject::Scale()
+            auto _component(getComponent(
+                static_cast<ecs_TypeID>(hexECoreComponents::SCALE)
+            ));
+
+            hexScaleComponent* const scaleComponent(
+                static_cast<hexScaleComponent*>(_component.get())
+            );
+
+            if (!scaleComponent)
+                return;
+
+            hexLock componentLock(scaleComponent->mMutex);
+            scaleComponent->mValue += scale;
+            componentLock.unlock();
+
+            if (!affectChildren)
+                return;
+
+            const auto               _childrenCount(countChildren());
+            GameObject::object_ptr_t child_ptr(nullptr);
+            for (size_t childIndex = 0; childIndex < _childrenCount; childIndex++)
+            {
+                child_ptr = getNextChild(childIndex);
+                if (!child_ptr.get())
+                    continue;
+
+                child_ptr->Scale(scale, true);
+            }
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
