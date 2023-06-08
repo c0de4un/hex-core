@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_CORE_I_ASSET_HXX
-#define HEX_CORE_I_ASSET_HXX
+#ifndef HEX_CORE_I_MATERIAL_HXX
+#define HEX_CORE_I_MATERIAL_HXX
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -22,13 +22,8 @@
     #include <hex/core/cfg/hex_api.hpp>
 #endif /// !HEX_CORE_CFG_API_HPP
 
-// Include hex::string
-#ifndef HEX_CORE_CFG_STRING_HPP
-    #include <hex/core/cfg/hex_string.hpp>
-#endif /// !HEX_CORE_CFG_STRING_HPP
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// IAsset
+// IMaterial
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
@@ -39,7 +34,7 @@ namespace hex
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        HEX_API class IAsset
+        HEX_API class IMaterial
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -60,34 +55,7 @@ namespace hex
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual ~IAsset() noexcept = default;
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // GETTERS & SETTERS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            virtual bool isLoaded() const noexcept     = 0;
-            virtual bool isLoading() const noexcept    = 0;
-            virtual bool isUnloading() const noexcept  = 0;
-
-            virtual size_t countUsers() const noexcept = 0;
-
-            virtual const hexString getName() const noexcept = 0;
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // METHODS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            /*!
-             * @thread_safety - render-thread only
-             * @return "true" if OK, "false" if failed
-            */
-            virtual bool Load()   = 0;
-
-            /*!
-             * @thread_safety - render-thread only
-            */
-            virtual void Unload() = 0;
+            virtual ~IMaterial() noexcept = default;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -99,9 +67,6 @@ namespace hex
 
 }
 
-using hexIAsset = hex::core::IAsset;
-#define HEX_CORE_I_ASSET_DECL
-
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_CORE_I_ASSET_HXX
+#endif /// !HEX_CORE_I_MATERIAL_HXX

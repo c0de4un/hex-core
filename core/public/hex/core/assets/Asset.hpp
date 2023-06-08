@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_CORE_ASSETS_SYSTEM_HPP
-#define HEX_CORE_ASSETS_SYSTEM_HPP
+#ifndef HEX_CORE_ASSET_HPP
+#define HEX_CORE_ASSET_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -17,18 +17,23 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::ecs::System
-#ifndef HEX_ECS_SYSTEM_HPP
-    #include <hex/core/ecs/System.hpp>
-#endif /// !HEX_ECS_SYSTEM_HPP
+// Include hex::core::IAsset
+#ifndef HEX_CORE_I_ASSET_HXX
+    #include <hex/core/assets/IAsset.hxx>
+#endif /// !HEX_CORE_I_ASSET_HXX
 
-// Include hex::memory
-#ifndef HEX_CORE_CFG_MEMORY_HPP
-    #include <hex/core/cfg/hex_memory.hpp>
-#endif /// !HEX_CORE_CFG_MEMORY_HPP
+// Include hex::atomic
+#ifndef HEX_CORE_CFG_ATOMIC_HPP
+    #include <hex/core/cfg/hex_atomic.hpp>
+#endif /// !HEX_CORE_CFG_ATOMIC_HPP
+
+// Include hex::mutex
+#ifndef HEX_CORE_CFG_MUTEX_HPP
+    #include <hex/core/cfg/hex_mutex.hpp>
+#endif /// !HEX_CORE_CFG_MUTEX_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// AssetsSystem
+// Asset
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
@@ -39,7 +44,7 @@ namespace hex
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        HEX_API class AssetsSystem : public hex::ecs::System
+        HEX_API class Asset : public hexIAsset
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -57,39 +62,53 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // FIELDS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            static hexMutex                mInstanceMutex;
-            static hexShared<AssetsSystem> mpInstance;
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // DELETED
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            AssetsSystem(const AssetsSystem&)            = delete;
-            AssetsSystem& operator=(const AssetsSystem&) = delete;
-            AssetsSystem(AssetsSystem&&)                 = delete;
-            AssetsSystem& operator=(AssetsSystem&&)      = delete;
+            Asset(const Asset&)            = delete;
+            Asset& operator=(const Asset&) = delete;
+            Asset(Asset&&)                 = delete;
+            Asset& operator=(Asset&&)      = delete;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
         protected:
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // FIELDS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            hex_atomic<unsigned char> mState;
+            hex_atomic<unsigned int>  mUsersCount;
+            hexMutex                  mStateMutex;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // CONSTANTS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            static constexpr const unsigned char STATE_NONE      = 0;
+            static constexpr const unsigned char STATE_LOADING   = 1;
+            static constexpr const unsigned char STATE_LOADED    = 2;
+            static constexpr const unsigned char STATE_UNLOADING = 3;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // CONSTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            explicit AssetsSystem();
+            explicit Asset(const hexString pName);
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // GETTERS & SETTERS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            static void setInstance(AssetsSystem* const);
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // METHODS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            virtual bool onLoad();
+            virtual void onUnload();
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -98,24 +117,43 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // CONSTANTS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            const hexString mName;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual ~AssetsSystem() noexcept;
+            virtual ~Asset() noexcept;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // GETTERS & SETTERS
+            // PUBLIC OVERRIDE: IAsset.GETTERS & SETTERS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            static hexShared<AssetsSystem> getInstance();
+            virtual bool isLoaded() const noexcept     final;
+            virtual bool isLoading() const noexcept    final;
+            virtual bool isUnloading() const noexcept  final;
+
+            virtual size_t countUsers() const noexcept final;
+
+            virtual const hexString getName() const noexcept final;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // METHODS
+            // PUBLIC OVERRIDE: IAsset.METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            static void Terminate() noexcept;
+            /*!
+             * @thread_safety - render-thread only
+             * @return "true" if OK, "false" if failed
+            */
+            virtual bool Load()   final;
 
-
+            /*!
+             * @thread_safety - render-thread only
+            */
+            virtual void Unload() final;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -127,8 +165,8 @@ namespace hex
 
 }
 
-using hexAssets = hex::core::AssetsSystem;
+using hexAsset = hex::core::Asset;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_CORE_ASSETS_SYSTEM_HPP
+#endif /// !HEX_CORE_ASSET_HPP

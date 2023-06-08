@@ -21,9 +21,9 @@
 
 #ifdef HEX_LOGGING // LOG
 
-#ifndef HEX_CORE_CFG_DEBUG_HPP
-    #include <hex/core/cfg/hex_debug.hpp>
-#endif /// !HEX_CORE_CFG_DEBUG_HPP
+    #ifndef HEX_CORE_CFG_DEBUG_HPP
+        #include <hex/core/cfg/hex_debug.hpp>
+    #endif /// !HEX_CORE_CFG_DEBUG_HPP
 
 #endif // LOG
 
