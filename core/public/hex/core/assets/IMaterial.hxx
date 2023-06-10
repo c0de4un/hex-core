@@ -22,6 +22,27 @@
     #include <hex/core/cfg/hex_api.hpp>
 #endif /// !HEX_CORE_CFG_API_HPP
 
+// Include hex::string
+#ifndef HEX_CORE_CFG_STRING_HPP
+    #include <hex/core/cfg/hex_string.hpp>
+#endif /// !HEX_CORE_CFG_STRING_HPP
+
+// Include hex::memory
+#ifndef HEX_CORE_CFG_MEMORY_HPP
+    #include <hex/core/cfg/hex_memory.hpp>
+#endif /// !HEX_CORE_CFG_MEMORY_HPP
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// FORWARD-DECLARATIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Forward-declare hex::core::Asset
+#ifndef HEX_CORE_ASSET_DECL
+    #define HEX_CORE_ASSET_DECL
+    namespace hex { namespace core { class Asset; } }
+    using hexAsset = hex::core::Asset;
+#endif /// !HEX_CORE_ASSET_DECL
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // IMaterial
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -58,6 +79,19 @@ namespace hex
             virtual ~IMaterial() noexcept = default;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // GETTERS & SETTERS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            virtual hexShared<Asset> getSlot(const hexString&) = 0;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // METHODS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            virtual void attachSlot(const hexString&, hexAsset* const) = 0;
+            virtual void detachSlot(const hexString&)                  = 0;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         };
 
@@ -66,6 +100,8 @@ namespace hex
     }
 
 }
+
+using hexIMaterial = hex::core::IMaterial;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 

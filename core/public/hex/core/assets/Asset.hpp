@@ -166,6 +166,7 @@ namespace hex
 }
 
 using hexAsset = hex::core::Asset;
+#define HEX_CORE_ASSET_DECL
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
