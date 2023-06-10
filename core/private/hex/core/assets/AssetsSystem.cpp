@@ -19,6 +19,11 @@
     #include <hex/core/assets/AssetsSystem.hpp>
 #endif /// !HEX_CORE_ASSETS_SYSTEM_HPP
 
+// Include hex::core::Material
+#ifndef HEX_CORE_MATERIAL_HPP
+    #include <hex/core/assets/Material.hpp>
+#endif /// !HEX_CORE_MATERIAL_HPP
+
 #ifdef HEX_LOGGING // LOG
 
     #ifndef HEX_CORE_CFG_DEBUG_HPP
@@ -114,6 +119,11 @@ namespace hex
 #endif // DEBUG
 
             mpInstance.reset(nullptr);
+        }
+
+        hexShared<hexMaterial> AssetsSystem::createMaterial(const hexString name)
+        {
+            return hexShared<Material>(new hexMaterial(name));
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

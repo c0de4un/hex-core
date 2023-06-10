@@ -27,6 +27,22 @@
     #include <hex/core/cfg/hex_memory.hpp>
 #endif /// !HEX_CORE_CFG_MEMORY_HPP
 
+// Include hex::string
+#ifndef HEX_CORE_CFG_STRING_HPP
+    #include <hex/core/cfg/hex_string.hpp>
+#endif /// !HEX_CORE_CFG_STRING_HPP
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// FORWARD-DECLARATIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Forward-Declare hex::core::Material
+#ifndef HEX_CORE_MATERIAL_DECL
+    #define HEX_CORE_MATERIAL_DECL
+    namespace hex { namespace core { class Material; } }
+    using hexMaterial = hex::core::Material;
+#endif /// !HEX_CORE_MATERIAL_DECL
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // AssetsSystem
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -115,7 +131,7 @@ namespace hex
 
             static void Terminate() noexcept;
 
-
+            hexShared<hexMaterial> createMaterial(const hexString);
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
