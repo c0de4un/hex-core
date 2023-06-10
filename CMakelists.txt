@@ -111,11 +111,13 @@ set( HEX_CORE_HEADERS
     # OBJECTS
     "${HEX_CORE_PUBLIC}objects/GameObject.hpp"
     # ASSETS
-    "${HEX_CORE_PUBLIC}assets/IAsset.hxx"
     "${HEX_CORE_PUBLIC}assets/Asset.hpp"
     "${HEX_CORE_PUBLIC}assets/AssetsSystem.hpp"
+    "${HEX_CORE_PUBLIC}assets/EShaderType.hpp"
+    "${HEX_CORE_PUBLIC}assets/IAsset.hxx"
     "${HEX_CORE_PUBLIC}assets/IMaterial.hxx"
     "${HEX_CORE_PUBLIC}assets/Material.hpp"
+    "${HEX_CORE_PUBLIC}assets/Shader.hpp"
     # PCH
     "${HEX_CORE_PUBLIC}hex_core.hpp"
 )
@@ -169,6 +171,7 @@ set( HEX_CORE_SOURCES
     "${HEX_CORE_PRIVATE}assets/AssetsSystem.cpp"
     "${HEX_CORE_PRIVATE}assets/Asset.cpp"
     "${HEX_CORE_PRIVATE}assets/Material.cpp"
+    "${HEX_CORE_PRIVATE}assets/Shader.cpp"
 )
 
 # DEBUG
