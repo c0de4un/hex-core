@@ -69,6 +69,15 @@ namespace hex
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // Shader: PUBLIC GETTERS & SETTERS
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        void Shader::setShader(hexShared<Shader>&)
+        {
+            // void
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     }
 
