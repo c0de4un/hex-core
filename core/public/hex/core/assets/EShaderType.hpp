@@ -62,6 +62,8 @@ namespace hex
 
 }
 
+using hexEShaderType = hex::core::EShaderType;
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 #endif /// !HEX_CORE_E_SHADER_TYPE_HPP

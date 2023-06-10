@@ -155,7 +155,7 @@ namespace hex
             }
         }
 
-        hexShared<hexShader> createShader(
+        hexShared<hexShader> RenderSystem::createShader(
             const hexString name,
             const unsigned char shaderType,
             const hexString* const sourceFile,
