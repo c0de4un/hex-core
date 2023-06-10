@@ -155,6 +155,15 @@ namespace hex
             }
         }
 
+        hexShared<hexShader> createShader(
+            const hexString name,
+            const unsigned char shaderType,
+            const hexString* const sourceFile,
+            const hexString* const sourceCode
+        ) {
+            return hexShared<hexShader>(nullptr);
+        }
+
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     }

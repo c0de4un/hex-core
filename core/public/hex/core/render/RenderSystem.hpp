@@ -135,6 +135,13 @@ namespace hex
             virtual void registerListener(listener_ptr_t&) final;
             virtual void unregisterListener(hexIRendererListener* const)    final;
 
+            virtual hexShared<hexShader> createShader(
+                const hexString name,
+                const unsigned char shaderType,
+                const hexString* const sourceFile,
+                const hexString* const sourceCode
+            ) override;
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         };

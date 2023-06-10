@@ -19,6 +19,11 @@
     #include <hex/core/assets/AssetsSystem.hpp>
 #endif /// !HEX_CORE_ASSETS_SYSTEM_HPP
 
+// Include hex::core::RenderSystem
+#ifndef HEX_CORE_RENDER_SYSTEM_HPP
+    #include <hex/core/render/RenderSystem.hpp>
+#endif /// !HEX_CORE_RENDER_SYSTEM_HPP
+
 #ifdef HEX_LOGGING // LOG
 
     #ifndef HEX_CORE_CFG_DEBUG_HPP
@@ -119,6 +124,29 @@ namespace hex
         hexShared<hexMaterial> AssetsSystem::createMaterial(const hexString name)
         {
             return hexShared<Material>(new hexMaterial(name));
+        }
+
+        hexShared<hexShader> AssetsSystem::createShader(
+            const hexString name,
+            const unsigned char shaderType,
+            const hexString* const sourceFile,
+            const hexString* const sourceCode
+        ) {
+            auto renderSystem( hexRenderer::getInstance() );
+
+#ifdef HEX_DEBUG // DEBUG
+            assert(renderSystem.get() && "AssetsSystem::createShader: called when RenderSystem is not initialized ! Fix logic");
+#endif // DEBUG
+
+            if (!renderSystem.get() || !renderSystem->isStarted())
+                return hexShared<hexShader>(nullptr);
+
+            return renderSystem->createShader(
+                name,
+                shaderType,
+                sourceFile,
+                sourceCode
+            );
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

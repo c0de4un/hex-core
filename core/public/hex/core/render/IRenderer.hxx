@@ -27,6 +27,11 @@
     #include <hex/core/cfg/hex_memory.hpp>
 #endif /// !HEX_CORE_CFG_MEMORY_HPP
 
+// Include hex::core::Shader
+#ifndef HEX_CORE_SHADER_HPP
+    #include <hex/core/assets/Shader.hpp>
+#endif /// !HEX_CORE_SHADER_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FORWARD-DECLARATIONS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -79,6 +84,13 @@ namespace hex
 
             virtual void registerListener(hexShared<hexIRendererListener>&) = 0;
             virtual void unregisterListener(hexIRendererListener* const)    = 0;
+
+            virtual hexShared<hexShader> createShader(
+                const hexString name,
+                const unsigned char shaderType,
+                const hexString* const sourceFile,
+                const hexString* const sourceCode
+            ) = 0;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

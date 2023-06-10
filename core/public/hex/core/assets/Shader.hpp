@@ -119,6 +119,8 @@ namespace hex
 
 }
 
+using hexShader = hex::core::Shader;
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 #endif /// !HEX_CORE_SHADER_HPP

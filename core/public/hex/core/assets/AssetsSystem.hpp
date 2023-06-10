@@ -32,6 +32,11 @@
     #include <hex/core/assets/Material.hpp>
 #endif /// !HEX_CORE_MATERIAL_HPP
 
+// Include hex::core::Shader
+#ifndef HEX_CORE_SHADER_HPP
+    #include <hex/core/assets/Shader.hpp>
+#endif /// !HEX_CORE_SHADER_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // AssetsSystem
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -121,6 +126,13 @@ namespace hex
             static void Terminate() noexcept;
 
             hexShared<hexMaterial> createMaterial(const hexString);
+
+            hexShared<hexShader> createShader(
+                const hexString name,
+                const unsigned char shaderType,
+                const hexString* const sourceFile,
+                const hexString* const sourceCode
+            );
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
