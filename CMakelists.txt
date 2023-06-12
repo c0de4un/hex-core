@@ -87,6 +87,7 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}ecs/ecs_types.hpp"
     "${HEX_CORE_PUBLIC}ecs/EntitiesManager.hpp"
     "${HEX_CORE_PUBLIC}ecs/Entity.hpp"
+    "${HEX_CORE_PUBLIC}ecs/ESystems.hpp"
     "${HEX_CORE_PUBLIC}ecs/Event.hpp"
     "${HEX_CORE_PUBLIC}ecs/EventsCollection.hpp"
     "${HEX_CORE_PUBLIC}ecs/EventsManager.hpp"
@@ -96,7 +97,7 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}ecs/ISystem.hxx"
     "${HEX_CORE_PUBLIC}ecs/System.hpp"
     "${HEX_CORE_PUBLIC}ecs/SystemsManager.hpp"
-    "${HEX_CORE_PUBLIC}ecs/ESystems.hpp"
+    "${HEX_CORE_PUBLIC}ecs/TypesStorage.hpp"
     # APPLICATION
     "${HEX_CORE_PUBLIC}app/IApplication.hxx"
     "${HEX_CORE_PUBLIC}app/Application.hpp"
@@ -159,6 +160,7 @@ set( HEX_CORE_SOURCES
     "${HEX_CORE_PRIVATE}ecs/EventsManager.cpp"
     "${HEX_CORE_PRIVATE}ecs/System.cpp"
     "${HEX_CORE_PRIVATE}ecs/SystemsManager.cpp"
+    "${HEX_CORE_PRIVATE}ecs/TypesStorage.cpp"
     # APPLICATION
     "${HEX_CORE_PRIVATE}app/Application.cpp"
     # GRAPHICS
