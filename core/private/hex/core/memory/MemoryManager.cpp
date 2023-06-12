@@ -78,9 +78,6 @@ namespace hex
 
             // To prevent dead-locks when triggering smart-pointers and objects destructors
             mInstance = nullptr;
-
-            // Delete objects
-            deleteObjects();
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

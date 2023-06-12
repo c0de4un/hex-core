@@ -54,9 +54,17 @@ namespace hex
         Application::Application()
             : System(static_cast<ecs_TypeID>(hexESystems::APPLICATION))
         {
+#ifdef HEX_LOGGING // LOG
+            hexLog::Info("Application::constructor");
+#endif // LOG
         }
 
-        Application::~Application() noexcept = default;
+        Application::~Application() noexcept
+        {
+#ifdef HEX_LOGGING // LOG
+            hexLog::Info("Application::destructor");
+#endif // LOG
+        }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // GETTERS & SETTERS

@@ -246,7 +246,7 @@ namespace hex
 
         bool GameObject::isLoaded() const noexcept
         {
-            const auto loadingState(mLoadingState.load());
+            const unsigned char loadingState(mLoadingState.load());
 
             return loadingState > GameObject::LOADING_SATE_NONE && loadingState < GameObject::LOADING_SATE_UNLOADING;
         }

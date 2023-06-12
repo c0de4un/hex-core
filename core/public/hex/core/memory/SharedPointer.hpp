@@ -174,6 +174,9 @@ namespace hex
 
             void onDeleteObject() final
             {
+                if (!mAddress)
+                    return;
+
                 T* address(mAddress);
                 mAddress = nullptr;
 

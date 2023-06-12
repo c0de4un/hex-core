@@ -93,7 +93,7 @@ namespace hex
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            listener_ptr_t getNextListener(const size_t index);
+            hexIRendererListener* getNextListener(const size_t index);
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // DELETED

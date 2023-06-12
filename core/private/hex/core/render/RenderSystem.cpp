@@ -97,15 +97,15 @@ namespace hex
         // PROTECTED METHODS
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        RenderSystem::listener_ptr_t RenderSystem::getNextListener(const size_t index)
+        hexIRendererListener* RenderSystem::getNextListener(const size_t index)
         {
             hexLock lock(mListenersMutex);
 
             const size_t listenersCount(mListeners.size());
             if (!listenersCount || index >= listenersCount)
-                return listener_ptr_t(nullptr);
+                return nullptr;
 
-            return mListeners[index];
+            return mListeners[index].get();
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
