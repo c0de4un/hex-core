@@ -77,6 +77,8 @@ namespace hex
             :
             Entity(typeId),
             mName(pName),
+            mLoadingState(GameObject::LOADING_SATE_NONE),
+            mLoadingStateMutex(),
             mChildrenMutex(hasChildren ? new hexMutex() : nullptr),
             mChildren(hasChildren ? new hexVector<object_ptr_t>() : nullptr),
             mParent(nullptr)
@@ -96,7 +98,7 @@ namespace hex
 
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // GETTERS & SETTERS
+        // GameObject: PUBLIC GETTERS & SETTERS
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         hexString GameObject::getName() const noexcept
@@ -242,6 +244,13 @@ namespace hex
             }
         }
 
+        bool GameObject::isLoaded() const noexcept
+        {
+            const auto loadingState(mLoadingState.load());
+
+            return loadingState > GameObject::LOADING_SATE_NONE && loadingState < GameObject::LOADING_SATE_UNLOADING;
+        }
+
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // GameObject.PROTECTED: GETTERS & SETTERS
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -273,7 +282,7 @@ namespace hex
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // METHODS
+        // GameObject: PROTECTED METHODS
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         bool GameObject::onAttach(GameObject* const parent)
@@ -302,6 +311,135 @@ namespace hex
 
             mParent = nullptr;
         }
+
+        bool GameObject::onLoad()
+        {
+            if (!loadAttachedObjects())
+            {
+#ifdef HEX_LOGGING // LOG
+            hexString logMsg("GameObject#");
+            if (mName)
+                logMsg += *mName;
+            else
+            {
+                logMsg += std::to_string(mTypeID);
+                logMsg += ":";
+                logMsg += std::to_string(mID);
+            }
+            logMsg += "::onLoad: failed to load children";
+            hexLog::Error(logMsg.c_str());
+#endif // LOG
+
+                return false;
+            }
+
+            mLoadingState = GameObject::LOADING_SATE_LOADED;
+
+            return true;
+        }
+
+        void GameObject::onUnload()
+        {
+            unloadAttachedObjects();
+
+            mLoadingState = GameObject::LOADING_SATE_NONE;
+        }
+
+        bool GameObject::loadAttachedObjects()
+        {
+            if (!mChildren)
+                return true;
+
+#ifdef HEX_LOGGING // LOG
+            hexString logMsg("GameObject#");
+            if (mName)
+                logMsg += *mName;
+            else
+            {
+                logMsg += std::to_string(mTypeID);
+                logMsg += ":";
+                logMsg += std::to_string(mID);
+            }
+            logMsg += "::loadAttachedObjects";
+            hexLog::Debug(logMsg.c_str());
+#endif // LOG
+
+            hexShared<GameObject> child(nullptr);
+            const size_t          childrenCount(countChildren());
+            for (size_t childIndex = 0; childIndex < childrenCount; childIndex++)
+            {
+                child = getNextChild(childIndex);
+                if (!child.get())
+                    continue;
+
+                if (!child->Load())
+                {
+#ifdef HEX_LOGGING // LOG
+                    logMsg = "GameObject#";
+                    if (mName)
+                        logMsg += *mName;
+                    else
+                    {
+                        logMsg += std::to_string(mTypeID);
+                        logMsg += ":";
+                        logMsg += std::to_string(mID);
+                    }
+                    logMsg += "::loadAttachedObjects: failed to load child #";
+
+                    if (child->mName)
+                        logMsg += *(child->mName);
+                    else
+                    {
+                        logMsg += std::to_string(child->mTypeID);
+                        logMsg += ":";
+                        logMsg += std::to_string(child->mID);
+                    }
+
+                    hexLog::Error(logMsg.c_str());
+#endif // LOG
+
+                    return false;
+                }
+            }
+
+            // @TODO: GameObject::loadAttachedObjects()
+            return true;
+        }
+
+        void GameObject::unloadAttachedObjects()
+        {
+            if (!mChildren)
+                return;
+
+#ifdef HEX_LOGGING // LOG
+            hexString logMsg("GameObject#");
+            if (mName)
+                logMsg += *mName;
+            else
+            {
+                logMsg += std::to_string(mTypeID);
+                logMsg += ":";
+                logMsg += std::to_string(mID);
+            }
+            logMsg += "::unloadAttachedObjects";
+            hexLog::Debug(logMsg.c_str());
+#endif // LOG
+
+            hexShared<GameObject> child(nullptr);
+            const size_t          childrenCount(countChildren());
+            for (size_t childIndex = 0; childIndex < childrenCount; childIndex++)
+            {
+                child = getNextChild(childIndex);
+                if (!child.get())
+                    continue;
+
+                child->Unload();
+            }
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // GameObject: PUBLIC METHODS
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         void GameObject::Move(const glm::vec3 offset, const bool affectChildren)
         {
@@ -399,9 +537,59 @@ namespace hex
             }
         }
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // METHODS
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        bool GameObject::Load()
+        {
+            hexLock loadingStateLock(mLoadingStateMutex);
+
+            if (isLoaded())
+                return true;
+
+            mLoadingState = GameObject::LOADING_SATE_LOADING;
+            loadingStateLock.unlock();
+
+#ifdef HEX_LOGGING // LOG
+            hexString logMsg("GameObject#");
+            if (mName)
+                logMsg += *mName;
+            else
+            {
+                logMsg += std::to_string(mTypeID);
+                logMsg += ":";
+                logMsg += std::to_string(mID);
+            }
+            logMsg += "::Load";
+            hexLog::Debug(logMsg.c_str());
+#endif // LOG
+
+            return onLoad();
+        }
+
+        void GameObject::Unload()
+        {
+            hexLock loadingStateLock(mLoadingStateMutex);
+
+            if (!isLoaded())
+                return;
+
+            mLoadingState = GameObject::LOADING_SATE_UNLOADING;
+            loadingStateLock.unlock();
+
+#ifdef HEX_LOGGING // LOG
+            hexString logMsg("GameObject#");
+            if (mName)
+                logMsg += *mName;
+            else
+            {
+                logMsg += std::to_string(mTypeID);
+                logMsg += ":";
+                logMsg += std::to_string(mID);
+            }
+            logMsg += "::Unload";
+            hexLog::Debug(logMsg.c_str());
+#endif // LOG
+
+            onUnload();
+        }
 
         bool GameObject::attachObject(GameObject* const pChild)
         {

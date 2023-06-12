@@ -27,6 +27,11 @@
     #include <hex/core/cfg/hex_string.hpp>
 #endif /// !HEX_CORE_CFG_STRING_HPP
 
+// Include hex::atomic
+#ifndef HEX_CORE_CFG_ATOMIC_HPP
+    #include <hex/core/cfg/hex_atomic.hpp>
+#endif /// !HEX_CORE_CFG_ATOMIC_HPP
+
 // Include hex::core::WeakPointer
 #ifndef HEX_CORE_WEAK_POINTER_HPP
     #include <hex/core/memory/WeakPointer.hpp>
@@ -98,9 +103,20 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // CONSTANTS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            static constexpr const unsigned char LOADING_SATE_NONE      = 0;
+            static constexpr const unsigned char LOADING_SATE_LOADING   = 0;
+            static constexpr const unsigned char LOADING_SATE_LOADED    = 0;
+            static constexpr const unsigned char LOADING_SATE_UNLOADING = 0;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // FIELDS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            hex_atomic<unsigned char>      mLoadingState;
+            hexMutex                       mLoadingStateMutex;
             hexMutex * const               mChildrenMutex;
             hexVector<object_ptr_t>* const mChildren;
             hexWeak<GameObject>            mParent;
@@ -129,6 +145,12 @@ namespace hex
             virtual bool onAttach(GameObject* const);
             virtual void onDetach(GameObject* const);
 
+            virtual bool onLoad();
+            virtual void onUnload();
+
+            inline bool loadAttachedObjects();
+            inline void unloadAttachedObjects();
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         public:
@@ -155,6 +177,8 @@ namespace hex
             void setRotation(const glm::vec3 rot, const bool affectChildren);
             void setScale(const glm::vec3 scale, const bool affectChildren);
 
+            bool isLoaded() const noexcept;
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -165,6 +189,9 @@ namespace hex
             void Move(const glm::vec3 offset, const bool affectChildren);
             void Rotate(const glm::vec3 offset, const bool affectChildren);
             void Scale(const glm::vec3 scale, const bool affectChildren);
+
+            bool Load();
+            void Unload();
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
