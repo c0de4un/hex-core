@@ -106,6 +106,9 @@ set( HEX_CORE_HEADERS
     "${HEX_CORE_PUBLIC}graphics/GraphicsSystem.hpp"
     "${HEX_CORE_PUBLIC}graphics/GraphicsSettings.hpp"
     # RENDER
+    "${HEX_CORE_PUBLIC}render/Batch.hpp"
+    "${HEX_CORE_PUBLIC}render/BatchingRequest.hpp"
+    "${HEX_CORE_PUBLIC}render/IBatchable.hxx"
     "${HEX_CORE_PUBLIC}render/IRenderer.hxx"
     "${HEX_CORE_PUBLIC}render/IRendererListener.hxx"
     "${HEX_CORE_PUBLIC}render/RenderSystem.hpp"

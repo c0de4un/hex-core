@@ -142,6 +142,11 @@ namespace hex
                 const hexString* const sourceCode
             ) override;
 
+            virtual hexShared<hexBatchingRequest> createBatchRequest() override;
+
+            virtual hexShared<hexBatch> registerBatchable(hexShared<hexBatchingRequest>& pRequest) override;
+            virtual void unregisterBatchable(ecs_ObjectID batchID)                                 override;
+
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         };

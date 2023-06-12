@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_CORE_I_RENDERER_HXX
-#define HEX_CORE_I_RENDERER_HXX
+#ifndef HEX_CORE_I_BATCHABLE_HXX
+#define HEX_CORE_I_BATCHABLE_HXX
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -17,44 +17,13 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::core::api
+// Include hex::api
 #ifndef HEX_CORE_CFG_API_HPP
     #include <hex/core/cfg/hex_api.hpp>
 #endif /// !HEX_CORE_CFG_API_HPP
 
-// Include hex::memory
-#ifndef HEX_CORE_CFG_MEMORY_HPP
-    #include <hex/core/cfg/hex_memory.hpp>
-#endif /// !HEX_CORE_CFG_MEMORY_HPP
-
-// Include hex::core::Shader
-#ifndef HEX_CORE_SHADER_HPP
-    #include <hex/core/assets/Shader.hpp>
-#endif /// !HEX_CORE_SHADER_HPP
-
-// Include hex::core::BatchingRequest
-#ifndef HEX_CORE_BATCHING_REQUEST_HPP
-    #include <hex/core/render/BatchingRequest.hpp>
-#endif /// !HEX_CORE_BATCHING_REQUEST_HPP
-
-// Include hex::core::Batch
-#ifndef HEX_CORE_BATCH_HPP
-    #include <hex/core/render/Batch.hpp>
-#endif /// !HEX_CORE_BATCH_HPP
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// FORWARD-DECLARATIONS
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-// Forward-Declare hex::core::IRenderListener
-#ifndef HEX_CORE_I_RENDERER_LISTENER_DECL
-    #define HEX_CORE_I_RENDERER_LISTENER_DECL
-    namespace hex { namespace core { class IRendererListener; } }
-    using hexIRendererListener = hex::core::IRendererListener;
-#endif /// !HEX_CORE_I_RENDERER_LISTENER_DECL
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// IRenderer
+// BatchingRequest
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
@@ -65,7 +34,7 @@ namespace hex
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        HEX_API class IRenderer
+        HEX_API class IBatchable
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -86,26 +55,13 @@ namespace hex
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual ~IRenderer() noexcept = default;
+            virtual ~IBatchable() noexcept = default;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            virtual void registerListener(hexShared<hexIRendererListener>&) = 0;
-            virtual void unregisterListener(hexIRendererListener* const)    = 0;
-
-            virtual hexShared<hexShader> createShader(
-                const hexString name,
-                const unsigned char shaderType,
-                const hexString* const sourceFile,
-                const hexString* const sourceCode
-            ) = 0;
-
-            virtual hexShared<hexBatchingRequest> createBatchRequest() = 0;
-
-            virtual hexShared<hexBatch> registerBatchable(hexShared<hexBatchingRequest>& pRequest) = 0;
-            virtual void unregisterBatchable(ecs_ObjectID batchID)                                 = 0;
+            virtual void onBatchDraw() = 0;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -117,8 +73,8 @@ namespace hex
 
 }
 
-using hexIRenderer = hex::core::IRenderer;
+using hexIBatchable = hex::core::IBatchable;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_CORE_I_RENDERER_HXX
+#endif /// !HEX_CORE_I_BATCHABLE_HXX

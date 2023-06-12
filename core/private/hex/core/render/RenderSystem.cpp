@@ -164,6 +164,23 @@ namespace hex
             return hexShared<hexShader>(nullptr);
         }
 
+        hexShared<hexBatchingRequest> RenderSystem::createBatchRequest()
+        {
+            return hexShared<hexBatchingRequest>(
+                new hexBatchingRequest()
+            );
+        }
+
+        hexShared<hexBatch> RenderSystem::registerBatchable(hexShared<hexBatchingRequest>& pRequest)
+        {
+            return hexShared<hexBatch>(nullptr);
+        }
+
+        void RenderSystem::unregisterBatchable(ecs_ObjectID batchID)
+        {
+            // void
+        }
+
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     }
