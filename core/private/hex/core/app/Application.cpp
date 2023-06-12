@@ -85,6 +85,8 @@ namespace hex
             assert(instance.get() && "Application::Terminate: already terminated, fix logic");
 #endif // DEBUG
 
+            instance->Stop();
+
             instance.reset();
         }
 

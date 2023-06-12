@@ -148,8 +148,8 @@ namespace hex
             virtual bool onLoad();
             virtual void onUnload();
 
-            inline bool loadAttachedObjects();
-            inline void unloadAttachedObjects();
+            bool loadAttachedObjects();
+            void unloadAttachedObjects();
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

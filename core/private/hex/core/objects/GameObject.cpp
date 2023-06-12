@@ -402,7 +402,6 @@ namespace hex
                 }
             }
 
-            // @TODO: GameObject::loadAttachedObjects()
             return true;
         }
 
