@@ -15,21 +15,20 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // HEADER
-#ifndef HEX_ECS_HPP
-    #include <hex/core/ecs/ECS.hpp>
-#endif /// !HEX_ECS_HPP
+#ifndef HEX_ECS_TYPES_STORAGE_HPP
+    #include <hex/core/ecs/TypesStorage.hpp>
+#endif /// !HEX_ECS_TYPES_STORAGE_HPP
 
-#ifdef HEX_LOGGING // LOG
+#ifdef HEX_DEBUG /// DEBUG
 
-    // Include hex::core::debug
     #ifndef HEX_CORE_CFG_DEBUG_HPP
         #include <hex/core/cfg/hex_debug.hpp>
     #endif /// !HEX_CORE_CFG_DEBUG_HPP
 
-#endif /// LOG
+#endif /// DEBUG
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ECS
+// TypesStorage
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
@@ -41,38 +40,53 @@ namespace hex
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // FIELDS
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        TypesStorage* TypesStorage::mInstance(nullptr);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // CONSTRUCTOR & DESTRUCTOR
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        ECS::ECS() noexcept  = default;
-        ECS::~ECS() noexcept = default;
+        TypesStorage::TypesStorage()
+            : mTypeIDs(TypesStorage::DEFAULT_CAPACITY)
+        {
+        }
+
+        TypesStorage::~TypesStorage() noexcept = default;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // METHODS
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        void ECS::Initialize()
+        void TypesStorage::Create()
         {
-#ifdef HEX_LOGGING // LOG
-            hexLog::Info("ECS::Initialize");
-#endif // LOG
+#ifdef HEX_DEBUG // DEBUG
+            assert(!mInstance && "TypesStorage::Create: already created");
+#endif // DEBUG
 
-            ecsTypesStorage::Create();
-            ecsComponents::Initialize();
-            ecs_Systems::Initialize();
-            ecs_Entities::Initialize();
+            if (!mInstance)
+                mInstance = new TypesStorage();
         }
 
-        void ECS::Terminate() noexcept
+        void TypesStorage::Terminate()
         {
-#ifdef HEX_LOGGING // LOG
-            hexLog::Info("ECS::Terminate");
-#endif // LOG
+#ifdef HEX_DEBUG // DEBUG
+            assert(mInstance && "TypesStorage::Terminate: already terminated, fix logic");
+#endif // DEBUG
 
-            ecsComponents::Terminate();
-            ecs_Systems::Terminate();
-            ecs_Entities::Terminate();
-            ecsTypesStorage::Terminate();
+            delete mInstance;
+            mInstance = nullptr;
+        }
+
+        ecs_TypeID TypesStorage::generateTypeID()
+        {
+#ifdef HEX_DEBUG // DEBUG
+            assert(mInstance && "TypesStorage::generateTypeID: instance if null, check logic");
+#endif // DEBUG
+
+            return mInstance->mTypeIDs.reserve();
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

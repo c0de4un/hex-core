@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef HEX_ECS_HPP
-#define HEX_ECS_HPP
+#ifndef HEX_ECS_TYPES_STORAGE_HPP
+#define HEX_ECS_TYPES_STORAGE_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -17,60 +17,28 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::core::api
+// Include hex::api
 #ifndef HEX_CORE_CFG_API_HPP
     #include <hex/core/cfg/hex_api.hpp>
 #endif /// !HEX_CORE_CFG_API_HPP
 
-// Compiler-Only
+// Include hex::ecs::types
+#ifndef HEX_ECS_TYPES_HPP
+    #include <hex/core/ecs/ecs_types.hpp>
+#endif /// !HEX_ECS_TYPES_HPP
 
-// Include hex::ecs::Component
-#ifndef HEX_ECS_COMPONENT_HPP
-    #include <hex/core/ecs/Component.hpp>
-#endif /// !HEX_ECS_COMPONENT_HPP
+// Include hex::core::IDStorage
+#ifndef HEX_CORE_ID_STORAGE_HPP
+    #include <hex/core/collections/IDStorage.hpp>
+#endif /// !HEX_CORE_ID_STORAGE_HPP
 
-// Include hex::ecs::ComponentsManager
-#ifndef HEX_ECS_COMPONENTS_MANAGER_HPP
-    #include <hex/core/ecs/ComponentsManager.hpp>
-#endif /// !HEX_ECS_COMPONENTS_MANAGER_HPP
-
-// Include hex::ecs::System
-#ifndef HEX_ECS_SYSTEM_HPP
-    #include <hex/core/ecs/System.hpp>
-#endif /// !HEX_ECS_SYSTEM_HPP
-
-// Include hex::ecs::SystemsManager
-#ifndef HEX_ECS_SYSTEMS_MANAGER_HPP
-    #include <hex/core/ecs/SystemsManager.hpp>
-#endif /// !HEX_ECS_SYSTEMS_MANAGER_HPP
-
-// Include hex::ecs::EntitiesManager
-#ifndef HEX_ECS_ENTITIES_MANAGER_HPP
-    #include <hex/core/ecs/EntitiesManager.hpp>
-#endif /// !HEX_ECS_ENTITIES_MANAGER_HPP
-
-// Include hex::ecs::Entity
-#ifndef HEX_ECS_ENTITY_HPP
-    #include <hex/core/ecs/Entity.hpp>
-#endif /// !HEX_ECS_ENTITY_HPP
-
-// Include hex::ecs::Event
-#ifndef HEX_ECS_EVENT_HPP
-    #include <hex/core/ecs/Event.hpp>
-#endif /// !HEX_ECS_EVENT_HPP
-
-// Include hex::ecs::EventsManager
-#ifndef HEX_ECS_EVENTS_MANAGER_HPP
-    #include <hex/core/ecs/EventsManager.hpp>
-#endif /// !HEX_ECS_EVENTS_MANAGER_HPP
-
-// Include hex::ecs::TypesStorage
-#ifndef HEX_ECS_TYPES_STORAGE_HPP
-    #include <hex/core/ecs/TypesStorage.hpp>
-#endif /// !HEX_ECS_TYPES_STORAGE_HPP
+// Include hex::memory
+#ifndef HEX_CORE_CFG_MEMORY_HPP
+    #include <hex/core/cfg/hex_memory.hpp>
+#endif /// !HEX_CORE_CFG_MEMORY_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// TYPES
+// TypesStorage
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
@@ -81,11 +49,7 @@ namespace hex
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // ECS
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        HEX_API class ECS final
+        HEX_API class TypesStorage final
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -103,19 +67,33 @@ namespace hex
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // CONSTANTS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            static constexpr const ecs_TypeID DEFAULT_CAPACITY = 32;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // FIELDS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            static TypesStorage* mInstance;
+
+            hexIDStorage<ecs_TypeID> mTypeIDs;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // CONSTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            explicit ECS() noexcept;
+            explicit TypesStorage();
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // DELETED
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            ECS(const ECS&)            = delete;
-            ECS& operator=(const ECS&) = delete;
-            ECS(ECS&&)                 = delete;
-            ECS& operator=(ECS&&)      = delete;
+            TypesStorage(const TypesStorage&)            = delete;
+            TypesStorage& operator=(const TypesStorage&) = delete;
+            TypesStorage(TypesStorage&&)                 = delete;
+            TypesStorage& operator=(TypesStorage&&)      = delete;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -127,14 +105,16 @@ namespace hex
             // DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            ~ECS() noexcept;
+            ~TypesStorage() noexcept;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            static void Initialize();
-            static void Terminate() noexcept;
+            static void Create();
+            static void Terminate();
+
+            static ecs_TypeID generateTypeID();
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -146,8 +126,8 @@ namespace hex
 
 }
 
-using hexECS = hex::ecs::ECS;
+using ecsTypesStorage = hex::ecs::TypesStorage;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !HEX_ECS_HPP
+#endif /// !HEX_ECS_TYPES_STORAGE_HPP
